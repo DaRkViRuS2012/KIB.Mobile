@@ -10,12 +10,15 @@ class AppBloc extends BaseBloc with Network {
   ServicesPopulated servicesPopulated = ServicesPopulated([]);
 
   final _servicesController = BehaviorSubject<ServicesState>();
+  final _maineServicesController = BehaviorSubject<ServiceResponce>();
   final _selectedServiceController = BehaviorSubject<Service>();
   final _subServicesController = BehaviorSubject<ServiceResponce>();
   AppBloc();
   Stream<Service> get selectedServiceStream =>
       _selectedServiceController.stream;
   Stream<ServicesState> get servicesStream => _servicesController.stream;
+  Stream<ServiceResponce> get mainServicesStream =>
+      _maineServicesController.stream;
   Stream<ServiceResponce> get subServicesStream =>
       _subServicesController.stream;
 
@@ -23,8 +26,18 @@ class AppBloc extends BaseBloc with Network {
     _selectedServiceController.sink.add(service);
   }
 
-  services() {
-    _servicesController.addStream(fetchServicesFromNetwork());
+  Future mainServices() {
+    return getServices().then((response) {
+      print(response);
+      _maineServicesController.sink.add(response);
+    }).catchError((e) {
+      print(e);
+      _maineServicesController.sink.addError(e);
+    });
+  }
+
+  services(id) {
+    _servicesController.addStream(fetchServicesFromNetwork(id));
   }
 
   Future subServices(id) {
@@ -37,10 +50,10 @@ class AppBloc extends BaseBloc with Network {
     });
   }
 
-  Stream<ServicesState> fetchServicesFromNetwork() async* {
+  Stream<ServicesState> fetchServicesFromNetwork(id) async* {
     yield ServicesLoading();
     try {
-      final result = await getServices();
+      final result = await getServiceProducts(id);
       if (result.data.isEmpty) {
         yield ServicesEmpty();
       } else {
@@ -56,6 +69,7 @@ class AppBloc extends BaseBloc with Network {
   void dispose() {
     _servicesController.close();
     _subServicesController.close();
+    _maineServicesController.close();
     _selectedServiceController.close();
   }
 }

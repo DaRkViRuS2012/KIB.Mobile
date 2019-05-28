@@ -24,9 +24,11 @@ class ServicesError extends ServicesState {
 class ServicesNoResults extends ServicesState {}
 
 class ServicesPopulated extends ServicesState {
-  final List<Service> services;
+  List<Service> services;
 
   update({List<Service> newServices}) {
+    this..services = [];
+
     return this..services.addAll(newServices ?? this.services);
   }
 
