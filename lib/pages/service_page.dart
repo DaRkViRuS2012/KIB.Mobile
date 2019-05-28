@@ -1,15 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:kib/common_widgets/common_widgets.dart';
 import 'package:kib/common_widgets/styles.dart';
+import 'package:kib/models/service.dart';
+
+import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:flutter_advanced_networkimage/transition.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ServicePage extends StatelessWidget {
+  final baseURL;
   final index;
-  const ServicePage({this.index, key}) : super(key: key);
+  final Service service;
+  const ServicePage({this.service, this.baseURL, this.index, key})
+      : super(key: key);
+
+  viewPDF(link) {
+    launch(link);
+  }
 
   @override
   Widget build(BuildContext context) {
+    print(service.image(baseURL));
     return Scaffold(
-        appBar: getAppBar(title: "Services Title", context: context),
+        appBar: getAppBar(title: service.enTitle, context: context),
         body: Material(
           child: Container(
             child: Column(
@@ -17,11 +30,15 @@ class ServicePage extends StatelessWidget {
                 Expanded(
                   flex: 3,
                   child: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/slider3.jpg'),
-                        fit: BoxFit.cover,
-                      ),
+                    child: TransitionToImage(
+                      image: AdvancedNetworkImage(service.image(baseURL),
+                          timeoutDuration: Duration(minutes: 1)),
+                      // This is the default placeholder widget at loading status,
+                      // you can write your own widget with CustomPainter.
+                      placeholder: Center(child: CircularProgressIndicator()),
+                      // This is default duration
+                      duration: Duration(milliseconds: 300),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -34,16 +51,16 @@ class ServicePage extends StatelessWidget {
                         title: Padding(
                           padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
                           child: Hero(
-                            tag: "$index",
+                            tag: "${service.id}",
                             child: Text(
-                              "Service Title",
+                              service.enTitle,
                               style: TextStyle(
                                   fontSize: 24.0, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
                         subtitle: Text(
-                          "Some Info About Service Some Info About Service Some Info About Service Some Info About Service Some Info About Service Some Info About Service Some Info About Service Some Info About Service Some Info About Service Some Info About Service Some Info About Service Some Info About Service",
+                          service.enDescription,
                           style: TextStyle(fontSize: 16),
                         ),
                       ),
@@ -62,6 +79,7 @@ class ServicePage extends StatelessWidget {
                       color: Style.primaryDarkColor,
                       onPressed: () {
                         print("preseed");
+                        viewPDF(service.quotationURL(baseURL));
                       },
                       child: Text(
                         "Get Qoutation",

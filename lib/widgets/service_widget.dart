@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kib/common_widgets/router.dart';
 import 'package:kib/common_widgets/styles.dart';
+import 'package:kib/models/service.dart';
 import 'package:kib/pages/service_page.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:flutter_advanced_networkimage/transition.dart';
 
 class ServiceCard extends StatefulWidget {
+  final baseURL;
   final int index;
-  const ServiceCard({this.index, Key key}) : super(key: key);
+  final Service service;
+  const ServiceCard({this.service, this.baseURL, this.index, Key key})
+      : super(key: key);
 
   @override
   _ServiceCardState createState() => _ServiceCardState();
@@ -15,9 +21,16 @@ class ServiceCard extends StatefulWidget {
 class _ServiceCardState extends State<ServiceCard> {
   @override
   Widget build(BuildContext context) {
+    var service = widget.service;
+    print(service.image(widget.baseURL));
     return InkWell(
       onTap: () {
-        Router.navigateTo(ServicePage(), context);
+        Router.navigateTo(
+            ServicePage(
+              service: service,
+              baseURL: widget.baseURL,
+            ),
+            context);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -30,13 +43,25 @@ class _ServiceCardState extends State<ServiceCard> {
             Expanded(
                 flex: 4,
                 child: Container(
+                  child: TransitionToImage(
+                    image: AdvancedNetworkImage(service.image(widget.baseURL),
+                        timeoutDuration: Duration(minutes: 1)),
+                    // This is the default placeholder widget at loading status,
+                    // you can write your own widget with CustomPainter.
+                    placeholder: Center(child: CircularProgressIndicator()),
+                    // This is default duration
+                    duration: Duration(milliseconds: 300),
+                    fit: BoxFit.cover,
+                  ),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(5.0),
-                          topRight: Radius.circular(5.0)),
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage('assets/images/slider3.jpg'))),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(5.0),
+                        topRight: Radius.circular(5.0)),
+                    // image: DecorationImage(
+                    //   fit: BoxFit.cover,
+                    //   image: AssetImage('assets/images/slider3.jpg'),
+                    // ),
+                  ),
                 )),
             Expanded(
                 flex: 3,
@@ -47,17 +72,17 @@ class _ServiceCardState extends State<ServiceCard> {
                     children: <Widget>[
                       ListTile(
                         title: Hero(
-                          tag: "${widget.index}",
+                          tag: "${service.id}",
                           child: Text(
-                            "Service Title",
+                            service.enTitle,
                             style: TextStyle(
                                 fontSize: 18.0, fontWeight: FontWeight.bold),
                           ),
                         ),
-                        subtitle: Text(
-                          "Some Info About Service Some Info About Service Some Info About Service",
-                          maxLines: 4,
-                        ),
+                        // subtitle: Text(
+                        //   service.enDescription,
+                        //   maxLines: 4,
+                        // ),
                       ),
                     ],
                   ),
