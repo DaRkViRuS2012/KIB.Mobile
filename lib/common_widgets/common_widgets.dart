@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:kib/common_widgets/localized_text.dart';
 
 Widget getAppBar({title, context}) {
   return AppBar(
-    title: new Text(
+    title: new LocalizedText(
       title,
       style: TextStyle(color: Colors.black),
     ),

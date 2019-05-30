@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kib/localization.dart';
-import 'package:kib/pages/home_page.dart';
 
 import 'common_widgets/onboard_screan.dart';
-import 'common_widgets/router.dart';
 import 'package:flutter\_localizations/flutter\_localizations.dart';
 
 void main() {

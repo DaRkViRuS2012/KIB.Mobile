@@ -18,7 +18,6 @@ class _GalleryPageState extends State<GalleryPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     appBloc = AppBloc();
     appBloc.galleries();
     super.initState();
@@ -27,7 +26,7 @@ class _GalleryPageState extends State<GalleryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar(title: "Gallery", context: context),
+      appBar: getAppBar(title: "gallery_Title", context: context),
       body: Material(
         child: Container(
           child: StreamBuilder(

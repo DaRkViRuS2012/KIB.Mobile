@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kib/common_widgets/localized_text.dart';
 import 'package:kib/common_widgets/router.dart';
 import 'package:kib/pages/about_us_page.dart';
 import 'package:kib/pages/contact_us_page.dart';
@@ -99,7 +100,7 @@ class RadialAnimation extends StatelessWidget {
                         25,
                         color: Colors.red,
                         icon: FontAwesomeIcons.bong,
-                        title: "News",
+                        title: "news_title",
                         action: () {
                           goToPage(NewsPage(), context);
                         },
@@ -107,26 +108,26 @@ class RadialAnimation extends StatelessWidget {
                       _buildButton(90,
                           color: Colors.green,
                           icon: FontAwesomeIcons.bong,
-                          title: "Gallery", action: () {
+                          title: "gallery_Title", action: () {
                         goToPage(GalleryPage(), context);
                       }),
                       _buildButton(155,
                           color: Colors.blue,
                           icon: FontAwesomeIcons.bong,
-                          title: "About\nus", action: () {
+                          title: "about_us_title", action: () {
                         goToPage(AboutusPage(), context);
                       }),
                       _buildButton(215,
                           color: Colors.black,
                           icon: FontAwesomeIcons.bong,
-                          title: "Contact\nus", action: () {
+                          title: "contant_us_title", action: () {
                         goToPage(ContactusPage(), context);
                       }),
                       _buildButton(
                         330,
                         color: Colors.indigo,
                         icon: FontAwesomeIcons.bong,
-                        title: "Service",
+                        title: "services_title",
                         action: () {
                           goToPage(ServicesPage(), context);
                         },
@@ -135,7 +136,7 @@ class RadialAnimation extends StatelessWidget {
                         270,
                         color: Colors.orange,
                         icon: FontAwesomeIcons.bong,
-                        title: "Insurance",
+                        title: "insurance_titl",
                         action: () {
                           goToPage(ProductsPage(), context);
                         },
@@ -221,7 +222,7 @@ class RadialAnimation extends StatelessWidget {
             height: 75,
             decoration: BoxDecoration(
                 shape: BoxShape.circle, gradient: Style.gradiantDecoration),
-            child: Text(
+            child: LocalizedText(
               title,
               textAlign: TextAlign.center,
               style: TextStyle(

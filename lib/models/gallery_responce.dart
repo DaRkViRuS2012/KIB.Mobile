@@ -6,10 +6,10 @@ import 'dart:convert';
 
 import 'package:kib/models/gallery.dart';
 
-GalleryResponce GalleryResponceFromJson(String str) =>
+GalleryResponce galleryResponceFromJson(String str) =>
     GalleryResponce.fromJson(json.decode(str));
 
-String GalleryResponceToJson(GalleryResponce data) =>
+String galleryResponceToJson(GalleryResponce data) =>
     json.encode(data.toJson());
 
 class GalleryResponce {

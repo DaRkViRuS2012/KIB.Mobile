@@ -18,11 +18,37 @@ class Network {
   static final String mediaURL = _baseUrl + '/storage/app/public';
 
   final String serviceURL = _apiURL + 'services';
+  final String productURL = _apiURL + 'products';
   final String galleriesURL = _apiURL + 'galleries';
   final String newsURL = _apiURL + 'news';
 
   Future<ServiceResponce> getServices() async {
     final response = await http.get(serviceURL);
+    if (response.statusCode == 200) {
+      return ServiceResponce.fromJson(json.decode(response.body));
+    } else if (response.statusCode == ErrorCodes.LOGIN_FAILED) {
+      throw 'error_wrong_credentials';
+    } else {
+      print(response.body);
+      throw json.decode(response.body);
+    }
+  }
+
+  Future<ServiceResponce> getInsurances() async {
+    final response = await http.get(productURL);
+    if (response.statusCode == 200) {
+      return ServiceResponce.fromJson(json.decode(response.body));
+    } else if (response.statusCode == ErrorCodes.LOGIN_FAILED) {
+      throw 'error_wrong_credentials';
+    } else {
+      print(response.body);
+      throw json.decode(response.body);
+    }
+  }
+
+  Future<ServiceResponce> getInsuranceProducts(String id) async {
+    var _subURL = _apiURL + "product/sub/$id";
+    final response = await http.get(_subURL);
     if (response.statusCode == 200) {
       return ServiceResponce.fromJson(json.decode(response.body));
     } else if (response.statusCode == ErrorCodes.LOGIN_FAILED) {

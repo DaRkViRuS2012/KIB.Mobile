@@ -6,7 +6,6 @@ import 'package:kib/common_widgets/errors_widget.dart';
 import 'package:kib/common_widgets/loading_widget.dart';
 import 'package:kib/states/news_state.dart';
 import 'package:kib/widgets/news_list_widget.dart';
-import 'package:kib/widgets/news_widget.dart';
 
 class NewsPage extends StatefulWidget {
   const NewsPage({Key key}) : super(key: key);
@@ -19,7 +18,6 @@ class _NewsPageState extends State<NewsPage> {
   static AppBloc appBloc;
   @override
   void initState() {
-    // TODO: implement initState
     appBloc = AppBloc();
     appBloc.news();
     super.initState();
@@ -28,7 +26,7 @@ class _NewsPageState extends State<NewsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar(title: "News", context: context),
+      appBar: getAppBar(title: "news_title", context: context),
       body: Material(
         child: Container(
           child: StreamBuilder(

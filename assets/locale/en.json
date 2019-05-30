@@ -1,3 +1,12 @@
 {
-  "hello_world": "Hello World"
+  "welcome_msg": "Welcome To KIB",
+  "welcome_msg_sub_title": "Choose what you want",
+  "rights_msg": "All rights recieved to KIB @ 2019",
+  "services_title": "Services",
+  "news_title": "News",
+  "gallery_Title": "Gallery",
+  "about_us_title": "About us",
+  "contant_us_title": "Contact us",
+  "insurance_titl": "Insurances",
+  "buy_Insurance": "Buy Insurance"
 }

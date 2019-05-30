@@ -11,7 +11,7 @@ class _AboutusPageState extends State<AboutusPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar(title: "About us", context: context),
+      appBar: getAppBar(title: "about_us_title", context: context),
       body: Material(
         child: Container(child: Center(child: Text("Here gose About Us"))),
       ),

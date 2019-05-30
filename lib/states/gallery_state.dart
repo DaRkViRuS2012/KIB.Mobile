@@ -9,7 +9,6 @@
 // Stream<String>. We call this Stream the onTextChanged "intent".
 
 import 'package:kib/models/gallery.dart';
-import 'package:kib/models/service.dart';
 
 class GalleryState {
   GalleryState();

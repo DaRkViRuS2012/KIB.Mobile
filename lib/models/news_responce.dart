@@ -6,10 +6,10 @@ import 'dart:convert';
 
 import 'package:kib/models/news.dart';
 
-NewsResponce NewsResponceFromJson(String str) =>
+NewsResponce newsResponceFromJson(String str) =>
     NewsResponce.fromJson(json.decode(str));
 
-String NewsResponceToJson(NewsResponce data) => json.encode(data.toJson());
+String newsResponceToJson(NewsResponce data) => json.encode(data.toJson());
 
 class NewsResponce {
   bool status;

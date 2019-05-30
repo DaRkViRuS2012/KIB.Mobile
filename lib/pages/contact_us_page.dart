@@ -11,7 +11,7 @@ class _ContactusPageState extends State<ContactusPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar(title: "Contact us", context: context),
+      appBar: getAppBar(title: "contant_us_title", context: context),
       body: Material(
         child: Container(
           child: Center(

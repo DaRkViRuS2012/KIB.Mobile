@@ -16,16 +16,28 @@ class Service {
   DateTime updatedAt;
   dynamic deletedAt;
   List<Media> media;
+  List<Media> productMedia;
   List<Service> sons;
   dynamic company;
   List<dynamic> options;
   Media quotation;
 
   String image(String baseURL) {
-    if (this.media != null) {
-      for (Media m in media) {
-        if (m.mediaType == "image") {
-          return m.url;
+    if (type == "service") {
+      if (this.media != null) {
+        for (Media m in media) {
+          if (m.mediaType == "image") {
+            return m.url;
+          }
+        }
+      }
+    }
+    if (type == "product") {
+      if (this.productMedia != null) {
+        for (Media m in productMedia) {
+          if (m.mediaType == "image") {
+            return m.url;
+          }
         }
       }
     }
@@ -34,7 +46,7 @@ class Service {
 
   String quotationURL(String baseURL) {
     if (this.quotation != null) {
-      return  quotation.url;
+      return quotation.url;
     }
     return "";
   }
@@ -55,6 +67,7 @@ class Service {
     this.updatedAt,
     this.deletedAt,
     this.media,
+    this.productMedia,
     this.sons,
     this.company,
     this.options,
@@ -85,6 +98,10 @@ class Service {
         media: json["media"] == null
             ? null
             : new List<Media>.from(json["media"].map((x) => Media.fromJson(x))),
+        productMedia: json["product_media"] == null
+            ? null
+            : new List<Media>.from(
+                json["product_media"].map((x) => Media.fromJson(x))),
         sons: json["sons"] == null
             ? null
             : new List<Service>.from(
@@ -115,7 +132,10 @@ class Service {
         "deleted_at": deletedAt,
         "media": media == null
             ? null
-            : new List<dynamic>.from(media.map((x) => x.toJson())),
+            : new List<Media>.from(media.map((x) => x.toJson())),
+        "product_media": media == null
+            ? null
+            : new List<Media>.from(productMedia.map((x) => x.toJson())),
         "sons": sons == null
             ? null
             : new List<Service>.from(sons.map((x) => x.toJson())),

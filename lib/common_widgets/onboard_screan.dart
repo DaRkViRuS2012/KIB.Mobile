@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kib/common_widgets/data.dart';
 import 'package:kib/common_widgets/router.dart';
+import 'package:kib/localization.dart';
 import 'package:kib/pages/home_page.dart';
 import 'Page_indicator.dart';
 import 'package:gradient_text/gradient_text.dart';
@@ -37,6 +38,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    var textDirction = AppLocalizations.of(context).locale.languageCode == "ar"
+        ? TextDirection.rtl
+        : TextDirection.ltr;
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -107,8 +111,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                      EdgeInsets.only(top: 30.0, left: 22.0),
+                                  padding: EdgeInsetsDirectional.only(
+                                      start: 22.0, top: 30),
                                   child: GradientText(
                                     page.title,
                                     gradient: LinearGradient(
@@ -123,8 +127,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(
-                                left: 34.0, top: 16.0, right: 16),
+                            padding: const EdgeInsetsDirectional.only(
+                                start: 34.0, top: 16.0, end: 16),
                             child: Transform(
                               transform: Matrix4.translationValues(
                                   0, 50.0 * (1 - y), 0),
@@ -145,15 +149,17 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 );
               },
             ),
-            Positioned(
-              left: 30.0,
+            Positioned.directional(
+              textDirection: textDirction,
+              start: 30.0,
               bottom: 55.0,
               child: Container(
                   width: 100.0,
                   child: PageIndicator(currentPage, pageList.length)),
             ),
-            Positioned(
-              right: 30.0,
+            Positioned.directional(
+              textDirection: textDirction,
+              end: 30.0,
               bottom: 30.0,
               child: ScaleTransition(
                 scale: _scaleAnimation,

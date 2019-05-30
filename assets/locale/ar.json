@@ -1,3 +1,12 @@
 {
-  "hello_world": "اهلا بالعالم"
+  "welcome_msg": "اهلا بكم في KIB",
+  "welcome_msg_sub_title": "اختار ماتريد",
+  "rights_msg": "جميع الحقوق محفوظة لشركة KIB @ ٢٠١٩",
+  "services_title": "الخدمات",
+  "news_title": "الاخبار",
+  "gallery_Title": "المعرض",
+  "about_us_title": "من نحن",
+  "contant_us_title": "اتصل بنا",
+  "insurance_titl": "التامينات",
+  "buy_Insurance": "شراء منتج تاميني"
 }
