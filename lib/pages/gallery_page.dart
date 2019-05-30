@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:kib/bloc/appBloc.dart';
 import 'package:kib/common_widgets/common_widgets.dart';
-import 'package:kib/common_widgets/router.dart';
+import 'package:kib/common_widgets/empty_result_widget.dart';
+import 'package:kib/common_widgets/errors_widget.dart';
+import 'package:kib/common_widgets/loading_widget.dart';
+import 'package:kib/states/gallery_state.dart';
+import 'package:kib/widgets/gallery_list_widget.dart';
 
 class GalleryPage extends StatefulWidget {
   GalleryPage({Key key}) : super(key: key);
@@ -9,39 +14,14 @@ class GalleryPage extends StatefulWidget {
 }
 
 class _GalleryPageState extends State<GalleryPage> {
-  List<String> images = [
-    "assets/images/1.png",
-    "assets/images/2.jpg",
-    "assets/images/3.jpg",
-    "assets/images/1.png",
-    "assets/images/2.jpg",
-    "assets/images/3.jpg",
-    "assets/images/3.jpg",
-    "assets/images/1.png",
-    "assets/images/2.jpg",
-  ];
+  static AppBloc appBloc;
 
-  List<Widget> getImageWidget() {
-    int i = 0;
-    List<Widget> list = [];
-    images.forEach((image) {
-      Widget a = InkWell(
-        onTap: () {
-          Router.goToImageSlideshow(context, images, i);
-        },
-        child: Hero(
-          tag: "$i",
-          child: Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(image), fit: BoxFit.fill)),
-          ),
-        ),
-      );
-      list.add(a);
-      i++;
-    });
-    return list;
+  @override
+  void initState() {
+    // TODO: implement initState
+    appBloc = AppBloc();
+    appBloc.galleries();
+    super.initState();
   }
 
   @override
@@ -50,18 +30,41 @@ class _GalleryPageState extends State<GalleryPage> {
       appBar: getAppBar(title: "Gallery", context: context),
       body: Material(
         child: Container(
-          child: CustomScrollView(
-            primary: false,
-            slivers: <Widget>[
-              SliverGrid.count(
-                // crossAxisSpacing: 10.0,
-                // mainAxisSpacing: 10.0,
-                crossAxisCount: 2,
-                childAspectRatio: 1,
-                children: getImageWidget(),
-              ),
-            ],
-          ),
+          child: StreamBuilder(
+              key: Key('streamBuilder'),
+              stream: appBloc.galleryStream,
+              builder: (context, snapshot) {
+                final data = snapshot.data;
+                return Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: Stack(
+                        key: Key('content'),
+                        children: <Widget>[
+                          // Fade in an Empty Result screen if the search contained
+                          // no items
+                          EmptyWidget(visible: data is GalleryEmpty),
+
+                          // Fade in a loading screen when results are being fetched
+                          LoadingWidget(visible: data is GalleryLoading),
+
+                          // Fade in an error if something went wrong when fetching
+                          // the results
+                          ErrorsWidget(
+                              visible: data is GalleryError,
+                              error: data is GalleryError ? data.error : ""),
+
+                          // Fade in the Result if available
+                          GalleryListWidget(
+                              galleries: data is GalleryPopulated
+                                  ? data.galleries
+                                  : []),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }),
         ),
       ),
     );

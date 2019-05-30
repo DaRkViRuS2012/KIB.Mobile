@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:photo_view/photo_view.dart';
 
 class ImageSlideshowWidget extends StatefulWidget {
   final List<String> images;
@@ -39,7 +38,7 @@ class ImageSlideshowWidgetState extends State<ImageSlideshowWidget> {
                 child: Container(
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage(widget.images[index]))),
+                          image: NetworkImage(widget.images[index]))),
                 ),
                 tag: "$index",
               ),

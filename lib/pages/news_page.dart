@@ -1,9 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:kib/bloc/appBloc.dart';
 import 'package:kib/common_widgets/common_widgets.dart';
+import 'package:kib/common_widgets/empty_result_widget.dart';
+import 'package:kib/common_widgets/errors_widget.dart';
+import 'package:kib/common_widgets/loading_widget.dart';
+import 'package:kib/states/news_state.dart';
+import 'package:kib/widgets/news_list_widget.dart';
 import 'package:kib/widgets/news_widget.dart';
 
-class NewsPage extends StatelessWidget {
+class NewsPage extends StatefulWidget {
   const NewsPage({Key key}) : super(key: key);
+
+  @override
+  _NewsPageState createState() => _NewsPageState();
+}
+
+class _NewsPageState extends State<NewsPage> {
+  static AppBloc appBloc;
+  @override
+  void initState() {
+    // TODO: implement initState
+    appBloc = AppBloc();
+    appBloc.news();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,14 +31,38 @@ class NewsPage extends StatelessWidget {
       appBar: getAppBar(title: "News", context: context),
       body: Material(
         child: Container(
-          child: ListView.builder(
-              padding: EdgeInsets.only(bottom: 5, top: 5),
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              physics: const ClampingScrollPhysics(),
-              itemCount: 3,
-              itemBuilder: (BuildContext context, int index) {
-                return NewsWidget();
+          child: StreamBuilder(
+              key: Key('streamBuilder'),
+              stream: appBloc.newsStream,
+              builder: (context, snapshot) {
+                final data = snapshot.data;
+                return Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: Stack(
+                        key: Key('content'),
+                        children: <Widget>[
+                          // Fade in an Empty Result screen if the search contained
+                          // no items
+                          EmptyWidget(visible: data is NewsEmpty),
+
+                          // Fade in a loading screen when results are being fetched
+                          LoadingWidget(visible: data is NewsLoading),
+
+                          // Fade in an error if something went wrong when fetching
+                          // the results
+                          ErrorsWidget(
+                              visible: data is NewsError,
+                              error: data is NewsError ? data.error : ""),
+
+                          // Fade in the Result if available
+                          NewsListWidget(
+                              news: data is NewsPopulated ? data.news : []),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
               }),
         ),
       ),

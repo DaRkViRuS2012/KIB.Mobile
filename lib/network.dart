@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import 'models/gallery_responce.dart';
+import 'models/news_responce.dart';
 import 'models/service_responce.dart';
 
 class Network {
@@ -16,6 +18,8 @@ class Network {
   static final String mediaURL = _baseUrl + '/storage/app/public';
 
   final String serviceURL = _apiURL + 'services';
+  final String galleriesURL = _apiURL + 'galleries';
+  final String newsURL = _apiURL + 'news';
 
   Future<ServiceResponce> getServices() async {
     final response = await http.get(serviceURL);
@@ -34,6 +38,30 @@ class Network {
     final response = await http.get(_subURL);
     if (response.statusCode == 200) {
       return ServiceResponce.fromJson(json.decode(response.body));
+    } else if (response.statusCode == ErrorCodes.LOGIN_FAILED) {
+      throw 'error_wrong_credentials';
+    } else {
+      print(response.body);
+      throw json.decode(response.body);
+    }
+  }
+
+  Future<GalleryResponce> getGalleries() async {
+    final response = await http.get(galleriesURL);
+    if (response.statusCode == 200) {
+      return GalleryResponce.fromJson(json.decode(response.body));
+    } else if (response.statusCode == ErrorCodes.LOGIN_FAILED) {
+      throw 'error_wrong_credentials';
+    } else {
+      print(response.body);
+      throw json.decode(response.body);
+    }
+  }
+
+  Future<NewsResponce> getNews() async {
+    final response = await http.get(newsURL);
+    if (response.statusCode == 200) {
+      return NewsResponce.fromJson(json.decode(response.body));
     } else if (response.statusCode == ErrorCodes.LOGIN_FAILED) {
       throw 'error_wrong_credentials';
     } else {

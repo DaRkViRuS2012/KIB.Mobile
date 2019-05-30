@@ -17,6 +17,7 @@ class ServicesPage extends StatefulWidget {
 
 class _ServicesPageState extends State<ServicesPage> {
   static AppBloc appBloc;
+  bool firstTime = true;
 
   @override
   void initState() {
@@ -45,7 +46,8 @@ class _ServicesPageState extends State<ServicesPage> {
                             stream: appBloc.mainServicesStream,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                if (!serviceSnapshot.hasData) {
+                                if (!serviceSnapshot.hasData && firstTime) {
+                                  firstTime = false;
                                   var s = snapshot.data.data[0];
                                   appBloc.services("${s.id}");
                                 }

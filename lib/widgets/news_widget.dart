@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kib/common_widgets/styles.dart';
+import 'package:kib/models/news.dart';
 
 class NewsWidget extends StatelessWidget {
-  const NewsWidget({Key key}) : super(key: key);
+  final News news;
+  const NewsWidget({this.news, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +23,9 @@ class NewsWidget extends StatelessWidget {
               flex: 1,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.red,
+                  // color: Colors.red,
                   image: DecorationImage(
-                    image: AssetImage('assets/images/slider3.jpg'),
+                    image: NetworkImage(news.image()),
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.only(
@@ -42,7 +44,7 @@ class NewsWidget extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(8.0),
                       child: Text(
-                        "24/1/2019",
+                        news.createdAt.toIso8601String(),
                         style: TextStyle(
                             fontSize: 14.0, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.end,
@@ -50,12 +52,12 @@ class NewsWidget extends StatelessWidget {
                     ),
                     ListTile(
                       title: Text(
-                        "News Title",
+                        news.enTitle,
                         style: TextStyle(
                             fontSize: 24.0, fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                        news.enBody,
                         style: TextStyle(fontSize: 16.0),
                       ),
                     )

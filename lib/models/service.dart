@@ -25,7 +25,7 @@ class Service {
     if (this.media != null) {
       for (Media m in media) {
         if (m.mediaType == "image") {
-          return baseURL + m.url;
+          return m.url;
         }
       }
     }
@@ -34,7 +34,7 @@ class Service {
 
   String quotationURL(String baseURL) {
     if (this.quotation != null) {
-      return baseURL + quotation.url;
+      return  quotation.url;
     }
     return "";
   }
