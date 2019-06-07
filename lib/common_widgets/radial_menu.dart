@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:kib/common_widgets/localized_text.dart';
 import 'package:kib/common_widgets/router.dart';
-import 'package:kib/pages/about_us_page.dart';
 import 'package:kib/pages/contact_us_page.dart';
 import 'package:kib/pages/gallery_page.dart';
 import 'package:kib/pages/news_page.dart';
 import 'package:kib/pages/products_page.dart';
 import 'package:kib/pages/services_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'dart:math';
 import 'package:vector_math/vector_math.dart' show radians;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../network.dart';
 import 'styles.dart';
 
 class RadialMenu extends StatefulWidget {
@@ -115,7 +116,8 @@ class RadialAnimation extends StatelessWidget {
                           color: Colors.blue,
                           icon: FontAwesomeIcons.bong,
                           title: "about_us_title", action: () {
-                        goToPage(AboutusPage(), context);
+                        //goToPage(AboutusPage(), context);
+                        launch(Network.baseUrl + '/aboutus');
                       }),
                       _buildButton(215,
                           color: Colors.black,
@@ -218,8 +220,8 @@ class RadialAnimation extends StatelessWidget {
           child: Container(
             alignment: Alignment(0, 0),
             margin: EdgeInsets.all(4.0),
-            width: 75,
-            height: 75,
+            width: 80,
+            height: 80,
             decoration: BoxDecoration(
                 shape: BoxShape.circle, gradient: Style.gradiantDecoration),
             child: LocalizedText(
@@ -227,7 +229,7 @@ class RadialAnimation extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 14,
+                  fontSize: 12,
                   fontWeight: FontWeight.bold),
             ),
           ),

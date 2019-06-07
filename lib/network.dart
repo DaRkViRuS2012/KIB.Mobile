@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
 
+import 'models/city_response.dart';
 import 'models/gallery_responce.dart';
 import 'models/news_responce.dart';
 import 'models/service_responce.dart';
+import 'models/user_responce.dart';
 
 class Network {
   Map<String, String> headers = {
@@ -13,14 +15,16 @@ class Network {
     'Accept': 'application/json',
   };
 
-  static final String _baseUrl = 'http://khouryinsurance.com';
-  static final String _apiURL = _baseUrl + '/api/';
-  static final String mediaURL = _baseUrl + '/storage/app/public';
-
+  static final String baseUrl = 'http://khouryinsurance.com';
+  static final String _apiURL = baseUrl + '/api/';
+  static final String mediaURL = baseUrl + '/storage/app/public';
+  final String loginURL = _apiURL + 'login';
+  final String registerURL = _apiURL + 'register';
   final String serviceURL = _apiURL + 'services';
   final String productURL = _apiURL + 'products';
   final String galleriesURL = _apiURL + 'galleries';
   final String newsURL = _apiURL + 'news';
+  final String citiesURL = _apiURL + 'cities';
 
   Future<ServiceResponce> getServices() async {
     final response = await http.get(serviceURL);
@@ -59,6 +63,64 @@ class Network {
     }
   }
 
+  Future<UserResponse> login(String email, String password) async {
+    final body = json.encode({
+      'email': email,
+      'password': password,
+    });
+    final response = await http.post(loginURL, body: body, headers: headers);
+    if (response.statusCode == 200) {
+      var res = json.decode(response.body);
+      if (res["status"] == false) {
+        throw 'error_wrong_credentials';
+      } else {
+        return UserResponse.fromJson(json.decode(response.body));
+      }
+    } else if (response.statusCode == ErrorCodes.LOGIN_FAILED) {
+      throw 'error_wrong_credentials';
+    } else {
+      print(response.body);
+      throw json.decode(response.body);
+    }
+  }
+
+  Future<UserResponse> signUp(
+    String firstName,
+    String fatherName,
+    String lastName,
+    String email,
+    String mobile,
+    String password,
+    String birthdate,
+    String cityId,
+  ) async {
+    print(Platform.operatingSystem);
+    final body = json.encode({
+      'fname_en': firstName,
+      'father_name_en': fatherName,
+      'lname_en': lastName,
+      'username': 'x',
+      'email': email,
+      'password': password,
+      'birthdate': birthdate,
+      'city_id': cityId,
+      'mobile': mobile,
+      'os': Platform.operatingSystem,
+    });
+    final response = await http.post(registerURL, body: body, headers: headers);
+    if (response.statusCode == 200) {
+      print(json.decode(response.body));
+      return UserResponse.fromJson(json.decode(response.body));
+    } else if (response.statusCode ==
+        ErrorCodes.PHONENUMBER_OR_USERNAME_IS_USED) {
+      print(json.decode(response.body));
+      throw 'PHONENUMBER_OR_USERNAME_IS_USED';
+    } else {
+      print(response.body);
+      throw json.decode(response.body);
+    }
+  }
+
   Future<ServiceResponce> getServiceProducts(String id) async {
     var _subURL = _apiURL + "service/sub/$id";
     final response = await http.get(_subURL);
@@ -88,6 +150,18 @@ class Network {
     final response = await http.get(newsURL);
     if (response.statusCode == 200) {
       return NewsResponce.fromJson(json.decode(response.body));
+    } else if (response.statusCode == ErrorCodes.LOGIN_FAILED) {
+      throw 'error_wrong_credentials';
+    } else {
+      print(response.body);
+      throw json.decode(response.body);
+    }
+  }
+
+  Future<CityResponce> getCities() async {
+    final response = await http.get(newsURL);
+    if (response.statusCode == 200) {
+      return CityResponce.fromJson(json.decode(response.body));
     } else if (response.statusCode == ErrorCodes.LOGIN_FAILED) {
       throw 'error_wrong_credentials';
     } else {

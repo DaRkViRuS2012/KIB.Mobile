@@ -11,9 +11,18 @@ class LoadingWidget extends StatelessWidget {
       duration: Duration(milliseconds: 1300),
       opacity: visible ? 1.0 : 0.0,
       child: Container(
+        color: Colors.white,
         padding: EdgeInsets.all(5.0),
         alignment: FractionalOffset.center,
-        child: CircularProgressIndicator(),
+        child: Center(
+          child: Container(
+            height: 100,
+            width: 100,
+            child: Image(
+              image: AssetImage('assets/images/logo.gif'),
+            ),
+          ),
+        ),
       ),
     );
   }

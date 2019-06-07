@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kib/bloc/appBloc.dart';
+import 'package:kib/bloc/bloc_provider.dart';
 import 'package:kib/common_widgets/common_widgets.dart';
+import 'package:kib/common_widgets/router.dart';
 import 'package:kib/common_widgets/styles.dart';
 import 'package:kib/models/service.dart';
 
@@ -7,9 +10,13 @@ import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../network.dart';
+import 'auth/login_page.dart';
+
 class ServicePage extends StatelessWidget {
   final baseURL;
   final index;
+
   final Service service;
   const ServicePage({this.service, this.baseURL, this.index, key})
       : super(key: key);
@@ -20,6 +27,7 @@ class ServicePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppBloc appBloc = BlocProvider.of<AppBloc>(context);
     print(service.image(baseURL));
     return Scaffold(
         appBar: getAppBar(title: service.enTitle, context: context),
@@ -79,7 +87,17 @@ class ServicePage extends StatelessWidget {
                       color: Style.primaryDarkColor,
                       onPressed: () {
                         print("preseed");
-                        viewPDF(service.quotationURL(baseURL));
+                        if (appBloc.isUserLoggedIn) {
+                          //  viewPDF(service.quotationURL(baseURL));
+                          launch(Network.baseUrl +
+                              '/application/' +
+                              appBloc.token +
+                              '/' +
+                              "${appBloc.me.id}" +
+                              '/service/create');
+                        } else {
+                          Router.present(LoginScreen(), context);
+                        }
                       },
                       child: Text(
                         "Get Qoutation",

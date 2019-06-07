@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kib/common_widgets/data.dart';
 import 'package:kib/common_widgets/router.dart';
+import 'package:kib/common_widgets/styles.dart';
 import 'package:kib/localization.dart';
 import 'package:kib/pages/home_page.dart';
 import 'Page_indicator.dart';
-import 'package:gradient_text/gradient_text.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -44,11 +44,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            colors: [Color(0xFF485563), Color(0xFF29323C)],
-            tileMode: TileMode.clamp,
-            begin: Alignment.topCenter,
-            stops: [0.0, 1.0],
-            end: Alignment.bottomCenter),
+          colors: [Style.primaryLightColor, Style.primaryDarkColor],
+          tileMode: TileMode.clamp,
+          begin: Alignment.topCenter,
+          stops: [0.0, 1.0],
+          end: Alignment.bottomCenter,
+        ),
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -75,7 +76,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 return Container(
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage(pageList[index].imageUrl),
+                          image: AssetImage(
+                              "assets/images/slider" + "${index + 1}" + ".png"),
                           fit: BoxFit.cover)),
                   child: AnimatedBuilder(
                     animation: _controller,
@@ -88,62 +90,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         delta = _controller.page - index;
                         y = 1 - delta.abs().clamp(0.0, 1.0);
                       }
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.only(left: 12.0),
-                            height: 100.0,
-                            child: Stack(
-                              children: <Widget>[
-                                Opacity(
-                                  opacity: .10,
-                                  child: GradientText(
-                                    page.title,
-                                    gradient: LinearGradient(
-                                        colors: pageList[index].titleGradient),
-                                    style: TextStyle(
-                                        fontSize: 100.0,
-                                        fontFamily: "Montserrat-Black",
-                                        letterSpacing: 1.0),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.only(
-                                      start: 22.0, top: 30),
-                                  child: GradientText(
-                                    page.title,
-                                    gradient: LinearGradient(
-                                        colors: pageList[index].titleGradient),
-                                    style: TextStyle(
-                                      fontSize: 50.0,
-                                      fontFamily: "Montserrat-Black",
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsetsDirectional.only(
-                                start: 34.0, top: 16.0, end: 16),
-                            child: Transform(
-                              transform: Matrix4.translationValues(
-                                  0, 50.0 * (1 - y), 0),
-                              child: Text(
-                                page.body,
-                                style: TextStyle(
-                                    fontSize: 24.0,
-                                    fontFamily: "Montserrat-Medium",
-                                    color: Colors.white //Color(0xFF9B9B9B),
-                                    ),
-                              ),
-                            ),
-                          )
-                        ],
-                      );
+                      return page;
                     },
                   ),
                 );

@@ -14,6 +14,16 @@ class Router {
     );
   }
 
+  static void push(page, BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      RouteTransition(
+        widget: page,
+        fade: true,
+      ),
+    );
+  }
+
   static void present(page, context) {
     Navigator.of(context).push(
       MaterialPageRoute(fullscreenDialog: true, builder: (context) => page),

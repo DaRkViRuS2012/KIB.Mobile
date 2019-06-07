@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:kib/models/media.dart';
 
 class Service {
@@ -42,6 +44,13 @@ class Service {
       }
     }
     return "";
+  }
+
+  String title(Locale locale) {
+    if (locale.languageCode == 'en') {
+      return enTitle;
+    }
+    return arTitle;
   }
 
   String quotationURL(String baseURL) {

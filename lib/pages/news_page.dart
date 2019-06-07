@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kib/bloc/appBloc.dart';
+import 'package:kib/bloc/bloc_provider.dart';
 import 'package:kib/common_widgets/common_widgets.dart';
 import 'package:kib/common_widgets/empty_result_widget.dart';
 import 'package:kib/common_widgets/errors_widget.dart';
@@ -18,7 +19,7 @@ class _NewsPageState extends State<NewsPage> {
   static AppBloc appBloc;
   @override
   void initState() {
-    appBloc = AppBloc();
+    appBloc = BlocProvider.of<AppBloc>(context);
     appBloc.news();
     super.initState();
   }

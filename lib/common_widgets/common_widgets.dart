@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:kib/common_widgets/localized_text.dart';
+import 'package:kib/common_widgets/router.dart';
+import 'package:kib/dataStore/dataStore.dart';
+import 'package:kib/pages/auth/profile_page.dart';
 
 Widget getAppBar({title, context}) {
   return AppBar(
@@ -26,6 +31,15 @@ Widget getAppBar({title, context}) {
         ),
       ),
     ),
+    actions: <Widget>[
+      if (DataStore().isUserLoggedIn)
+        IconButton(
+          icon: Icon(FontAwesomeIcons.userCircle, color: Colors.grey.shade900),
+          onPressed: () {
+            Router.present(ProfilePage(), context);
+          },
+        )
+    ],
   );
 }
 
