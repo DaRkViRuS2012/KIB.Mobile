@@ -46,7 +46,7 @@ class AppBloc extends BaseBloc with Network {
   final _selectedServiceController = BehaviorSubject<Service>();
   final _selectedInsuranceController = BehaviorSubject<Service>();
   final _subServicesController = BehaviorSubject<ServiceResponce>();
-  final _citiesController = BehaviorSubject<CityResponce>();
+  final _citiesController = PublishSubject<CityResponce>();
 
   Stream<Service> get selectedServiceStream =>
       _selectedServiceController.stream;

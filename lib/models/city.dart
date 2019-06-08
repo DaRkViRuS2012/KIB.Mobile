@@ -1,9 +1,10 @@
+import 'dart:ui';
 
 class City {
   int id;
   String enTitle;
   String arTitle;
-  String cityId;
+  int cityId;
 
   City({
     this.id,
@@ -11,6 +12,13 @@ class City {
     this.arTitle,
     this.cityId,
   });
+
+  String title(Locale locale) {
+    if (locale.languageCode == 'en') {
+      return enTitle;
+    }
+    return arTitle;
+  }
 
   factory City.fromJson(Map<String, dynamic> json) => new City(
         id: json["id"] == null ? null : json["id"],
@@ -24,6 +32,5 @@ class City {
         "en_title": enTitle == null ? null : enTitle,
         "ar_title": arTitle == null ? null : arTitle,
         "city_id": cityId == null ? null : cityId,
-        
       };
 }

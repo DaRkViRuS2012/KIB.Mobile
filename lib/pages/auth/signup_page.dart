@@ -68,6 +68,7 @@ class SignUpPageState extends State<SignUpPage> with UserFeedback {
 
   @override
   Widget build(BuildContext context) {
+    appBloc.citis();
     return Material(
       child: InkWell(
         onTap: () {
