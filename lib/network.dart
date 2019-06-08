@@ -159,7 +159,7 @@ class Network {
   }
 
   Future<CityResponce> getCities() async {
-    final response = await http.get(newsURL);
+    final response = await http.get(citiesURL);
     if (response.statusCode == 200) {
       return CityResponce.fromJson(json.decode(response.body));
     } else if (response.statusCode == ErrorCodes.LOGIN_FAILED) {
