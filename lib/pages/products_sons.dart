@@ -8,30 +8,31 @@ import 'package:kib/common_widgets/loading_widget.dart';
 import 'package:kib/models/service.dart';
 import 'package:kib/models/service_responce.dart';
 import 'package:kib/states/service_state.dart';
+import 'package:kib/widgets/product_list.dart';
 import 'package:kib/widgets/service_list_widget.dart';
 
-class ServicesSonsPage extends StatefulWidget {
+class ProductsSonsPage extends StatefulWidget {
   final String serviceId;
-  ServicesSonsPage({Key key, this.serviceId}) : super(key: key);
+  ProductsSonsPage({Key key, this.serviceId}) : super(key: key);
 
-  _ServicesSonsPageState createState() => _ServicesSonsPageState();
+  _ProductsSonsPageState createState() => _ProductsSonsPageState();
 }
 
-class _ServicesSonsPageState extends State<ServicesSonsPage> {
+class _ProductsSonsPageState extends State<ProductsSonsPage> {
   static AppBloc appBloc;
   bool firstTime = true;
 
   @override
   void initState() {
     appBloc = BlocProvider.of<AppBloc>(context);
-    appBloc.services(widget.serviceId);
+    appBloc.products(widget.serviceId);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar(title: "services_title", context: context),
+      appBar: getAppBar(title: "buy_Insurance", context: context),
       body: Material(
         child: Container(
           child: StreamBuilder<bool>(
@@ -134,8 +135,8 @@ class _ServicesSonsPageState extends State<ServicesSonsPage> {
                                                   : ""),
 
                                           // Fade in the Result if available
-                                          ServiceListWidget(
-                                              services:
+                                          ProductListWidget(
+                                              products:
                                                   data is ServicesPopulated
                                                       ? data.services
                                                       : []),

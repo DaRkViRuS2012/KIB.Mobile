@@ -31,16 +31,18 @@ class AppBloc extends BaseBloc with Network {
   bool get isUserLoggedIn => DataStore().isUserLoggedIn;
 
   ServicesPopulated servicesPopulated = ServicesPopulated([]);
+  ServicesPopulated mainServicesPopulated = ServicesPopulated([]);
+  ServicesPopulated mainProductsPopulated = ServicesPopulated([]);
   ServicesPopulated insurancesPopulated = ServicesPopulated([]);
   GalleryPopulated galleriesPopulated = GalleryPopulated([]);
   NewsPopulated newsPopulated = NewsPopulated([]);
 
   final _servicesController = BehaviorSubject<ServicesState>();
   final _productsController = BehaviorSubject<ServicesState>();
-  final _insurancesController = BehaviorSubject<ServiceResponce>();
+  final _insurancesController = BehaviorSubject<ServicesState>();
   final _gallriesController = BehaviorSubject<GalleryState>();
   final _newsController = BehaviorSubject<NewsState>();
-  final _maineServicesController = BehaviorSubject<ServiceResponce>();
+  final _maineServicesController = BehaviorSubject<ServicesState>();
   final _selectedServiceController = BehaviorSubject<Service>();
   final _selectedInsuranceController = BehaviorSubject<Service>();
   final _subServicesController = BehaviorSubject<ServiceResponce>();
@@ -52,10 +54,10 @@ class AppBloc extends BaseBloc with Network {
       _selectedInsuranceController.stream;
   Stream<ServicesState> get servicesStream => _servicesController.stream;
   Stream<ServicesState> get productsStream => _productsController.stream;
-  Stream<ServiceResponce> get insurancesStream => _insurancesController.stream;
+  Stream<ServicesState> get insurancesStream => _insurancesController.stream;
   Stream<NewsState> get newsStream => _newsController.stream;
   Stream<GalleryState> get galleryStream => _gallriesController.stream;
-  Stream<ServiceResponce> get mainServicesStream =>
+  Stream<ServicesState> get mainServicesStream =>
       _maineServicesController.stream;
   Stream<ServiceResponce> get subServicesStream =>
       _subServicesController.stream;
@@ -70,31 +72,26 @@ class AppBloc extends BaseBloc with Network {
     _selectedInsuranceController.sink.add(product);
   }
 
-  Future mainServices() {
-    startLoading;
-    return getServices().then((response) {
-      stopLoading;
-      print(response);
-      _maineServicesController.sink.add(response);
-    }).catchError((e) {
-      print(e);
-      stopLoading;
-      _maineServicesController.sink.addError(e);
-    });
+  mainServices() {
+    _maineServicesController.addStream(fetchMainServicesFromNetwork());
   }
 
-  Future mainProducts() {
-    startLoading;
-    return getInsurances().then((response) {
-      stopLoading;
-      print(response);
-      _insurancesController.sink.add(response);
-    }).catchError((e) {
-      print(e);
-      stopLoading;
-      _insurancesController.sink.addError(e);
-    });
+  mainProducts() {
+    _insurancesController.addStream(fetchMainProductsFromNetwork());
   }
+
+  // Future mainProducts() {
+  //   startLoading;
+  //   return getInsurances().then((response) {
+  //     stopLoading;
+  //     print(response);
+  //     _insurancesController.sink.add(response);
+  //   }).catchError((e) {
+  //     print(e);
+  //     stopLoading;
+  //     _insurancesController.sink.addError(e);
+  //   });
+  // }
 
   Future citis() {
     startLoading;
@@ -136,6 +133,42 @@ class AppBloc extends BaseBloc with Network {
       print(e);
       _subServicesController.sink.addError(e);
     });
+  }
+
+  Stream<ServicesState> fetchMainProductsFromNetwork() async* {
+    yield ServicesLoading();
+    startLoading;
+    try {
+      final result = await getInsurances();
+      stopLoading;
+      if (result.data.isEmpty) {
+        yield ServicesEmpty();
+      } else {
+        yield mainProductsPopulated.update(newServices: result.data);
+      }
+    } catch (e) {
+      stopLoading;
+      print('error $e');
+      yield ServicesError(e.toString());
+    }
+  }
+
+  Stream<ServicesState> fetchMainServicesFromNetwork() async* {
+    yield ServicesLoading();
+    startLoading;
+    try {
+      final result = await getServices();
+      stopLoading;
+      if (result.data.isEmpty) {
+        yield ServicesEmpty();
+      } else {
+        yield mainServicesPopulated.update(newServices: result.data);
+      }
+    } catch (e) {
+      stopLoading;
+      print('error $e');
+      yield ServicesError(e.toString());
+    }
   }
 
   Stream<ServicesState> fetchProductsFromNetwork(id) async* {

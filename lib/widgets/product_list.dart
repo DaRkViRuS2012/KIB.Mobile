@@ -15,12 +15,12 @@ class ProductListWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  MovieListWidgetState createState() {
-    return new MovieListWidgetState();
+  ProductListWidgetState createState() {
+    return new ProductListWidgetState();
   }
 }
 
-class MovieListWidgetState extends State<ProductListWidget> {
+class ProductListWidgetState extends State<ProductListWidget> {
   @override
   void initState() {
     super.initState();

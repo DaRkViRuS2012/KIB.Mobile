@@ -2,25 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kib/common_widgets/router.dart';
 import 'package:kib/models/service.dart';
-import 'package:kib/pages/service_page.dart';
+import 'package:kib/pages/product_page.dart';
+import 'package:kib/pages/products_sons.dart';
 import 'package:kib/widgets/service_widget.dart';
 import 'package:kib/network.dart';
 
-class ServiceListWidget extends StatefulWidget {
-  final List<Service> services;
+class InsuranceListWidget extends StatefulWidget {
+  final List<Service> products;
 
-  ServiceListWidget({
+  InsuranceListWidget({
     Key key,
-    @required this.services,
+    @required this.products,
   }) : super(key: key);
 
   @override
-  ServiceListWidgetState createState() {
-    return new ServiceListWidgetState();
+  InsuranceListWidgetState createState() {
+    return new InsuranceListWidgetState();
   }
 }
 
-class ServiceListWidgetState extends State<ServiceListWidget> {
+class InsuranceListWidgetState extends State<InsuranceListWidget> {
   @override
   void initState() {
     super.initState();
@@ -31,7 +32,7 @@ class ServiceListWidgetState extends State<ServiceListWidget> {
     return Material(
       child: AnimatedOpacity(
         duration: Duration(milliseconds: 800),
-        opacity: this.widget.services.isNotEmpty ? 1.0 : 0.0,
+        opacity: this.widget.products.isNotEmpty ? 1.0 : 0.0,
         child: CustomScrollView(
           primary: false,
           slivers: <Widget>[
@@ -42,17 +43,17 @@ class ServiceListWidgetState extends State<ServiceListWidget> {
                 mainAxisSpacing: 10.0,
                 crossAxisCount: 2,
                 childAspectRatio: 0.75,
-                children: widget.services
-                    .map((service) => InkWell(
+                children: widget.products
+                    .map((product) => InkWell(
                         onTap: () {
                           Router.navigateTo(
-                              ServicePage(
-                                service: service,
+                              ProductsSonsPage(
+                                serviceId: "${product.id}",
                               ),
                               context);
                         },
                         child: ServiceCard(
-                          service: service,
+                          service: product,
                           baseURL: Network.mediaURL,
                         )))
                     .toList(),

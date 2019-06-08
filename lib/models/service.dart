@@ -10,6 +10,7 @@ class Service {
   String arSubtitle;
   String arDescription;
   String enDescription;
+  String icon;
   int parentId;
   int active;
   int companyId;
@@ -68,6 +69,7 @@ class Service {
     this.arSubtitle,
     this.arDescription,
     this.enDescription,
+    this.icon,
     this.parentId,
     this.active,
     this.companyId,
@@ -89,6 +91,7 @@ class Service {
         arTitle: json["ar_title"] == null ? null : json["ar_title"],
         enSubtitle: json["en_subtitle"] == null ? null : json["en_subtitle"],
         arSubtitle: json["ar_subtitle"] == null ? null : json["ar_subtitle"],
+        icon: json["icon"] == null ? null : json["icon"],
         arDescription:
             json["ar_description"] == null ? null : json["ar_description"],
         enDescription:
@@ -130,6 +133,7 @@ class Service {
         "ar_title": arTitle == null ? null : arTitle,
         "en_subtitle": enSubtitle == null ? null : enSubtitle,
         "ar_subtitle": arSubtitle == null ? null : arSubtitle,
+        "icon": icon == null ? null : icon,
         "ar_description": arDescription == null ? null : arDescription,
         "en_description": enDescription == null ? null : enDescription,
         "parent_id": parentId == null ? null : parentId,

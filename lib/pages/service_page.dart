@@ -90,11 +90,11 @@ class ServicePage extends StatelessWidget {
                         if (appBloc.isUserLoggedIn) {
                           //  viewPDF(service.quotationURL(baseURL));
                           launch(Network.baseUrl +
-                              '/application/' +
+                              '/application/service/' +
                               appBloc.token +
                               '/' +
                               "${appBloc.me.id}" +
-                              '/service/create');
+                              '/create');
                         } else {
                           Router.present(LoginScreen(), context);
                         }

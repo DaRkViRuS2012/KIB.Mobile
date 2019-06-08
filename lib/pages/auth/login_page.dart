@@ -279,7 +279,7 @@ class LoginScreenState extends State<LoginScreen> with UserFeedback {
         onPressed: () {
           print("pressed");
           // Router.navigateTo(CodePage(), context);
-          launch("http://khouryinsurance.com/user/activate");
+          launch("http://khouryinsurance.com/user/active");
         },
         child: LocalizedText("code_activate"));
   }
