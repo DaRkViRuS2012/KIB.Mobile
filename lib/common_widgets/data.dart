@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gradient_text/gradient_text.dart';
 import 'package:kib/common_widgets/styles.dart';
 import 'package:kib/localization.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 var pageList = [
   FirstPageWdiget(
@@ -95,13 +96,14 @@ class FirstPageWdiget extends StatelessWidget {
                 start: 34.0, top: 16.0, end: 16),
             child: Transform(
               transform: Matrix4.translationValues(0, 0, 0),
-              child: Text(
+              child: AutoSizeText(
                 AppLocalizations.of(context).trans(body),
                 style: TextStyle(
                     fontSize: 24.0,
                     fontFamily: "Verdana",
                     color: Colors.white //Color(0xFF9B9B9B),
                     ),
+                maxLines: 1,
               ),
             ),
           ),
