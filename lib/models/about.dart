@@ -1,11 +1,22 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:kib/models/media.dart';
 
-class News {
+About aboutFromJson(String str) {
+  final jsonData = json.decode(str);
+  return About.fromJson(jsonData);
+}
+
+String aboutToJson(About data) {
+  final dyn = data.toJson();
+  return json.encode(dyn);
+}
+
+class About {
   int id;
-  String enTitle;
-  String arTitle;
+  String enDescription;
+  String arDescription;
   String arBody;
   String enBody;
   DateTime createdAt;
@@ -20,24 +31,17 @@ class News {
     return "";
   }
 
-  String title(Locale locale) {
-    if (locale.languageCode == 'en') {
-      return enTitle;
-    }
-    return arTitle;
-  }
-
   String body(Locale locale) {
     if (locale.languageCode == 'en') {
-      return enBody;
+      return enDescription;
     }
-    return arBody;
+    return arDescription;
   }
 
-  News({
+  About({
     this.id,
-    this.enTitle,
-    this.arTitle,
+    this.arDescription,
+    this.enDescription,
     this.arBody,
     this.enBody,
     this.createdAt,
@@ -46,10 +50,12 @@ class News {
     this.media,
   });
 
-  factory News.fromJson(Map<String, dynamic> json) => new News(
+  factory About.fromJson(Map<String, dynamic> json) => new About(
         id: json["id"] == null ? null : json["id"],
-        enTitle: json["en_title"] == null ? null : json["en_title"],
-        arTitle: json["ar_title"] == null ? null : json["ar_title"],
+        enDescription:
+            json["en_description"] == null ? null : json["en_description"],
+        arDescription:
+            json["ar_description"] == null ? null : json["ar_description"],
         arBody: json["ar_body"] == null ? null : json["ar_body"],
         enBody: json["en_body"] == null ? null : json["en_body"],
         createdAt: json["created_at"] == null
@@ -66,8 +72,8 @@ class News {
 
   Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
-        "en_title": enTitle == null ? null : enTitle,
-        "ar_title": arTitle == null ? null : arTitle,
+        "en_description": enDescription == null ? null : enDescription,
+        "ar_description": arDescription == null ? null : arDescription,
         "ar_body": arBody == null ? null : arBody,
         "en_body": enBody == null ? null : enBody,
         "created_at": createdAt == null ? null : createdAt.toIso8601String(),

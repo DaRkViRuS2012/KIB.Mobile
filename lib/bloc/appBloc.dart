@@ -1,5 +1,6 @@
 import 'package:kib/bloc/bloc_provider.dart';
 import 'package:kib/dataStore/dataStore.dart';
+import 'package:kib/models/about_response.dart';
 import 'package:kib/models/city_response.dart';
 import 'package:kib/models/service.dart';
 import 'package:kib/models/service_responce.dart';
@@ -16,6 +17,12 @@ class AppBloc extends BaseBloc with Network {
   final SharedPreferences _prefs;
   DataStore _dataStore;
 
+  bool gettingServices = false;
+  bool gettingSubServices = false;
+  bool gettingProducts = false;
+  bool gettingSubProducts = false;
+  bool gettingGalleries = false;
+  bool gettingNews = false;
   AppBloc(this._prefs) {
     _dataStore = DataStore();
   }
@@ -46,7 +53,8 @@ class AppBloc extends BaseBloc with Network {
   final _selectedServiceController = BehaviorSubject<Service>();
   final _selectedInsuranceController = BehaviorSubject<Service>();
   final _subServicesController = BehaviorSubject<ServiceResponce>();
-  final _citiesController = PublishSubject<CityResponce>();
+  final _citiesController = BehaviorSubject<CityResponce>();
+  final _aboutController = BehaviorSubject<AboutResponce>();
 
   Stream<Service> get selectedServiceStream =>
       _selectedServiceController.stream;
@@ -63,6 +71,7 @@ class AppBloc extends BaseBloc with Network {
       _subServicesController.stream;
 
   Stream<CityResponce> get citiesStream => _citiesController.stream;
+  Stream<AboutResponce> get aboutStream => _aboutController.stream;
 
   changeService(service) {
     _selectedServiceController.sink.add(service);
@@ -72,12 +81,16 @@ class AppBloc extends BaseBloc with Network {
     _selectedInsuranceController.sink.add(product);
   }
 
-  mainServices() {
-    _maineServicesController.addStream(fetchMainServicesFromNetwork());
+  Future mainServices() {
+    if (!gettingServices) {
+      return _maineServicesController.addStream(fetchMainServicesFromNetwork());
+    }
   }
 
   mainProducts() {
-    _insurancesController.addStream(fetchMainProductsFromNetwork());
+    if (!gettingProducts) {
+      _insurancesController.addStream(fetchMainProductsFromNetwork());
+    }
   }
 
   // Future mainProducts() {
@@ -106,29 +119,53 @@ class AppBloc extends BaseBloc with Network {
     });
   }
 
+  Future aboutus() {
+    startLoading;
+    return getAbout().then((response) {
+      print(response);
+      stopLoading;
+      _aboutController.sink.add(response);
+    }).catchError((e) {
+      print(e);
+      stopLoading;
+      _aboutController.sink.addError(e);
+    });
+  }
+
   services(id) {
-    _servicesController.addStream(fetchServicesFromNetwork(id));
+    if (!gettingSubServices) {
+      _servicesController.addStream(fetchServicesFromNetwork(id));
+    }
   }
 
   products(id) {
-    _productsController.addStream(fetchProductsFromNetwork(id));
+    if (!gettingSubProducts) {
+      _productsController.addStream(fetchProductsFromNetwork(id));
+    }
   }
 
   galleries() {
-    _gallriesController.addStream(fetchGalleriesFromNetwork());
+    if (!gettingGalleries) {
+      _gallriesController.addStream(fetchGalleriesFromNetwork());
+    }
   }
 
-  news() {
-    _newsController.addStream(fetchNewsFromNetwork());
+  Future news() {
+    if (!gettingNews) {
+      return _newsController.addStream(fetchNewsFromNetwork());
+    }
   }
 
   Future subServices(id) {
+    gettingSubServices = true;
     startLoading;
     return getServiceProducts(id).then((response) {
+      gettingSubServices = false;
       print(response);
       stopLoading;
       _subServicesController.sink.add(response);
     }).catchError((e) {
+      gettingSubServices = false;
       stopLoading;
       print(e);
       _subServicesController.sink.addError(e);
@@ -136,10 +173,12 @@ class AppBloc extends BaseBloc with Network {
   }
 
   Stream<ServicesState> fetchMainProductsFromNetwork() async* {
+    gettingProducts = true;
     yield ServicesLoading();
     startLoading;
     try {
       final result = await getInsurances();
+      gettingProducts = false;
       stopLoading;
       if (result.data.isEmpty) {
         yield ServicesEmpty();
@@ -147,6 +186,7 @@ class AppBloc extends BaseBloc with Network {
         yield mainProductsPopulated.update(newServices: result.data);
       }
     } catch (e) {
+      gettingProducts = false;
       stopLoading;
       print('error $e');
       yield ServicesError(e.toString());
@@ -154,10 +194,12 @@ class AppBloc extends BaseBloc with Network {
   }
 
   Stream<ServicesState> fetchMainServicesFromNetwork() async* {
+    gettingServices = true;
     yield ServicesLoading();
     startLoading;
     try {
       final result = await getServices();
+      gettingServices = false;
       stopLoading;
       if (result.data.isEmpty) {
         yield ServicesEmpty();
@@ -165,6 +207,7 @@ class AppBloc extends BaseBloc with Network {
         yield mainServicesPopulated.update(newServices: result.data);
       }
     } catch (e) {
+      gettingServices = false;
       stopLoading;
       print('error $e');
       yield ServicesError(e.toString());
@@ -172,11 +215,13 @@ class AppBloc extends BaseBloc with Network {
   }
 
   Stream<ServicesState> fetchProductsFromNetwork(id) async* {
+    gettingSubProducts = true;
     yield ServicesLoading();
     startLoading;
     try {
       final result = await getInsuranceProducts(id);
       stopLoading;
+      gettingSubProducts = false;
       if (result.data.isEmpty) {
         yield ServicesEmpty();
       } else {
@@ -184,6 +229,7 @@ class AppBloc extends BaseBloc with Network {
       }
     } catch (e) {
       stopLoading;
+      gettingSubProducts = false;
       print('error $e');
       yield ServicesError(e.toString());
     }
@@ -208,10 +254,12 @@ class AppBloc extends BaseBloc with Network {
   }
 
   Stream<GalleryState> fetchGalleriesFromNetwork() async* {
+    gettingGalleries = true;
     yield GalleryLoading();
     startLoading;
     try {
       final result = await getGalleries();
+      gettingGalleries = false;
       stopLoading;
       if (result.data.isEmpty) {
         yield GalleryEmpty();
@@ -220,16 +268,19 @@ class AppBloc extends BaseBloc with Network {
       }
     } catch (e) {
       stopLoading;
+      gettingGalleries = false;
       print('error $e');
       yield GalleryError(e.toString());
     }
   }
 
   Stream<NewsState> fetchNewsFromNetwork() async* {
+    gettingNews = true;
     yield NewsLoading();
     startLoading;
     try {
       final result = await getNews();
+      gettingNews = false;
       stopLoading;
       if (result.data.isEmpty) {
         yield NewsEmpty();
@@ -237,6 +288,7 @@ class AppBloc extends BaseBloc with Network {
         yield newsPopulated.update(newNews: result.data);
       }
     } catch (e) {
+      gettingNews = false;
       stopLoading;
       print('error $e');
       yield NewsError(e.toString());

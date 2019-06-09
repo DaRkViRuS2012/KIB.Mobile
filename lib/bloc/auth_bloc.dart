@@ -209,7 +209,8 @@ class AuthBloc extends BaseBloc with Validators, Network {
         _submitSignUpController.sink
             .addError("PHONENUMBER_OR_USERNAME_IS_USED");
       } else {
-        _submitSignUpController.sink.addError(e);
+        _submitSignUpController.sink.addError(
+            "Please check your data Mobile should only be 9 digits with out 0");
       }
       print(e);
     });

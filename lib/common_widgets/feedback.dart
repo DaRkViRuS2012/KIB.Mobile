@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kib/common_widgets/styles.dart';
 
-import '../localization.dart';
+// import '../localization.dart';
 
 mixin UserFeedback {
   void showInSnackBar(String value, BuildContext context,
@@ -10,7 +10,8 @@ mixin UserFeedback {
     Scaffold.of(context)?.removeCurrentSnackBar();
     Scaffold.of(context).showSnackBar(new SnackBar(
       content: new Text(
-        AppLocalizations.of(context).trans(value),
+        // AppLocalizations.of(context).trans(value),
+        value,
         textAlign: TextAlign.center,
         style: TextStyle(
             color: Colors.white,

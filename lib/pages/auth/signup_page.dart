@@ -6,12 +6,11 @@ import 'package:kib/bloc/bloc_provider.dart';
 import 'package:kib/common_widgets/feedback.dart';
 import 'package:kib/common_widgets/localized_text.dart';
 import 'package:kib/common_widgets/main_button.dart';
-import 'package:kib/common_widgets/router.dart';
 import 'package:kib/models/city.dart';
 import 'package:kib/models/city_response.dart';
 import 'package:kib/models/user_responce.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:kib/pages/auth/code_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../localization.dart';
 
@@ -108,7 +107,8 @@ class SignUpPageState extends State<SignUpPage> with UserFeedback {
                         //     builder: (context) => HomePage(
                         //           afterLogin: true,
                         //         )));
-                        Router.push(CodePage(), context);
+                        // Router.push(CodePage(), context);
+                        launch("http://khouryinsurance.com/user/active");
                       });
                     }
                     return Column(
@@ -342,7 +342,8 @@ class SignUpPageState extends State<SignUpPage> with UserFeedback {
                       constraints: BoxConstraints.expand(),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(city.enTitle),
+                        child: Text(
+                            city.title(AppLocalizations.of(context).locale)),
                       ),
                     ),
                     value: city, //"${service.id}",

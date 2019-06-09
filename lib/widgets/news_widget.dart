@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kib/common_widgets/styles.dart';
 import 'package:kib/models/news.dart';
+import 'package:flutter_html/flutter_html.dart';
+
+import '../localization.dart';
 
 class NewsWidget extends StatelessWidget {
   final News news;
@@ -51,16 +54,22 @@ class NewsWidget extends StatelessWidget {
                       ),
                     ),
                     ListTile(
-                      title: Text(
-                        news.enTitle,
-                        style: TextStyle(
-                            fontSize: 24.0, fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                        news.enBody,
-                        style: TextStyle(fontSize: 16.0),
-                      ),
-                    )
+                        title: Text(
+                          news.title(AppLocalizations.of(context).locale),
+                          style: TextStyle(
+                              fontSize: 24.0, fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: SingleChildScrollView(
+                          child: Html(
+                            data:
+                                news.body(AppLocalizations.of(context).locale),
+                          ),
+                        )
+                        //  Text(
+                        //   news.enBody,
+                        //   style: TextStyle(fontSize: 16.0),
+                        // ),
+                        )
                   ],
                 ),
               )),

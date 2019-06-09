@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kib/common_widgets/router.dart';
 import 'package:kib/models/service.dart';
-import 'package:kib/pages/product_page.dart';
 import 'package:kib/pages/products_sons.dart';
 import 'package:kib/widgets/service_widget.dart';
 import 'package:kib/network.dart';

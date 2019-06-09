@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
+import 'package:kib/models/about_response.dart';
 
 import 'models/city_response.dart';
 import 'models/gallery_responce.dart';
@@ -25,6 +26,7 @@ class Network {
   final String galleriesURL = _apiURL + 'galleries';
   final String newsURL = _apiURL + 'news';
   final String citiesURL = _apiURL + 'cities';
+  final String aboutURL = _apiURL + 'aboutus';
 
   Future<ServiceResponce> getServices() async {
     final response = await http.get(serviceURL);
@@ -150,6 +152,18 @@ class Network {
     final response = await http.get(newsURL);
     if (response.statusCode == 200) {
       return NewsResponce.fromJson(json.decode(response.body));
+    } else if (response.statusCode == ErrorCodes.LOGIN_FAILED) {
+      throw 'error_wrong_credentials';
+    } else {
+      print(response.body);
+      throw json.decode(response.body);
+    }
+  }
+
+  Future<AboutResponce> getAbout() async {
+    final response = await http.get(aboutURL);
+    if (response.statusCode == 200) {
+      return AboutResponce.fromJson(json.decode(response.body));
     } else if (response.statusCode == ErrorCodes.LOGIN_FAILED) {
       throw 'error_wrong_credentials';
     } else {

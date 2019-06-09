@@ -5,8 +5,6 @@ import 'package:kib/common_widgets/common_widgets.dart';
 import 'package:kib/common_widgets/empty_result_widget.dart';
 import 'package:kib/common_widgets/errors_widget.dart';
 import 'package:kib/common_widgets/loading_widget.dart';
-import 'package:kib/models/service.dart';
-import 'package:kib/models/service_responce.dart';
 import 'package:kib/states/service_state.dart';
 import 'package:kib/widgets/service_list_widget.dart';
 
