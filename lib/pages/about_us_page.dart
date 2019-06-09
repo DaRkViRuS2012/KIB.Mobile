@@ -3,7 +3,6 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:kib/bloc/appBloc.dart';
 import 'package:kib/bloc/bloc_provider.dart';
 import 'package:kib/common_widgets/common_widgets.dart';
-import 'package:kib/common_widgets/localized_text.dart';
 import 'package:kib/models/about_response.dart';
 
 import '../localization.dart';
