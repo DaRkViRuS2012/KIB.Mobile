@@ -329,6 +329,8 @@ class SignUpPageState extends State<SignUpPage> with UserFeedback {
           stream: appBloc.citiesStream,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              var c = snapshot.data.data[0];
+              bloc.changeSignUpCity("${c.id}");
               return DropdownButton<City>(
                 isExpanded: true,
                 items: snapshot.data.data.map((city) {
