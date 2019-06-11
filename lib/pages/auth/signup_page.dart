@@ -322,50 +322,57 @@ class SignUpPageState extends State<SignUpPage> with UserFeedback {
   }
 
   Widget cityTextField() {
-    return Padding(
-      padding:
-          EdgeInsets.only(top: 20.0, bottom: 20.0, left: 64.0, right: 64.0),
-      child: StreamBuilder<CityResponce>(
-          stream: appBloc.citiesStream,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              var c = snapshot.data.data[0];
-              bloc.changeSignUpCity("${c.id}");
-              return DropdownButton<City>(
-                isExpanded: true,
-                items: snapshot.data.data.map((city) {
-                  return DropdownMenuItem<City>(
-                    child: Container(
-                      // color: Colors.white,
-                      // width: MediaQuery.of(context)
-                      //         .size
-                      //         .width /
-                      //     1.5,
-                      constraints: BoxConstraints.expand(),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                            city.title(AppLocalizations.of(context).locale)),
+    return StreamBuilder<City>(
+        stream: bloc.selectedCityStream,
+        builder: (context, citySnapshot) {
+          return Padding(
+            padding: EdgeInsets.only(
+                top: 20.0, bottom: 20.0, left: 64.0, right: 64.0),
+            child: StreamBuilder<CityResponce>(
+                stream: appBloc.citiesStream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    var c = snapshot.data.data[0];
+
+                    bloc.changeSignUpCity("${c.id}");
+                    return DropdownButton<City>(
+                      isExpanded: true,
+                      items: snapshot.data.data.map((city) {
+                        return DropdownMenuItem<City>(
+                          child: Container(
+                            // color: Colors.white,
+                            // width: MediaQuery.of(context)
+                            //         .size
+                            //         .width /
+                            //     1.5,
+                            constraints: BoxConstraints.expand(),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(city
+                                  .title(AppLocalizations.of(context).locale)),
+                            ),
+                          ),
+                          value: city, //"${service.id}",
+                        );
+                      }).toList(),
+                      onChanged: (c) {
+                        print(c.enTitle);
+                        bloc.changeSelectedSignUpCity(c);
+                        bloc.changeSignUpCity("${c.id}");
+                      },
+                      value: citySnapshot.hasData
+                          ? citySnapshot.data
+                          : snapshot
+                              .data.data[0], //"${snapshot.data.data[0].id}",
+                      hint: LocalizedText(
+                        "city",
                       ),
-                    ),
-                    value: city, //"${service.id}",
-                  );
-                }).toList(),
-                onChanged: (c) {
-                  print(c.enTitle);
-                  bloc.changeSignUpCity("${c.id}");
-                },
-                value: snapshot.hasData
-                    ? snapshot.data.data[0]
-                    : null, //"${snapshot.data.data[0].id}",
-                hint: LocalizedText(
-                  "city",
-                ),
-              );
-            }
-            return Container();
-          }),
-    );
+                    );
+                  }
+                  return Container();
+                }),
+          );
+        });
   }
 
   Widget phoneTextField() {

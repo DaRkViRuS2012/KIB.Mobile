@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:kib/bloc/bloc_provider.dart';
+import 'package:kib/models/city.dart';
 import 'package:kib/models/user.dart';
 import 'package:kib/models/user_responce.dart';
 import 'package:kib/network.dart';
@@ -27,6 +28,7 @@ class AuthBloc extends BaseBloc with Validators, Network {
   final _emailSignUpController = BehaviorSubject<String>();
   final _birthDateSignUpController = BehaviorSubject<String>();
   final _citySignUpController = BehaviorSubject<String>();
+  final _selectedcitySignUpController = BehaviorSubject<City>();
 
   final _loadingController = BehaviorSubject<bool>();
 
@@ -64,6 +66,10 @@ class AuthBloc extends BaseBloc with Validators, Network {
   Function(String) get changeSignUpBirthDate =>
       _birthDateSignUpController.sink.add;
   Function(String) get changeSignUpCity => _citySignUpController.sink.add;
+  Function(City) get changeSelectedSignUpCity =>
+      _selectedcitySignUpController.sink.add;
+
+  Stream<City> get selectedCityStream => _selectedcitySignUpController.stream;
 
   Stream<String> get mobileSignUpStream =>
       _mobileSignUpController.stream.transform(validateName);
@@ -236,5 +242,6 @@ class AuthBloc extends BaseBloc with Validators, Network {
     _obscureSignUpPassword.close();
     _obscureSignUpPasswordConfirmation.close();
     _lockTouchEventController.close();
+    _selectedcitySignUpController.close();
   }
 }

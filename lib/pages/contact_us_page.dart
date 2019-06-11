@@ -138,7 +138,9 @@ class _ContactusPageState extends State<ContactusPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          launch("tell://+963969876543");
+                        },
                         icon: Icon(
                           Icons.phone,
                           size: 25,
@@ -146,7 +148,9 @@ class _ContactusPageState extends State<ContactusPage> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          launch("http://khouryinsurance.com");
+                        },
                         icon: Icon(
                           FontAwesomeIcons.wordpress,
                           size: 25,
@@ -154,7 +158,9 @@ class _ContactusPageState extends State<ContactusPage> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          launch("http://khouryinsurance.com");
+                        },
                         icon: Icon(
                           FontAwesomeIcons.facebookF,
                           size: 25,
