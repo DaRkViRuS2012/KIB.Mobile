@@ -139,7 +139,7 @@ class _ContactusPageState extends State<ContactusPage> {
                     children: <Widget>[
                       IconButton(
                         onPressed: () {
-                          launch("tell://+963969876543");
+                          launch("tel:+963969876543");
                         },
                         icon: Icon(
                           Icons.phone,
