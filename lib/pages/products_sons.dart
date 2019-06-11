@@ -105,7 +105,7 @@ class _ProductsSonsPageState extends State<ProductsSonsPage> {
                           flex: 8,
                           child: StreamBuilder(
                               key: Key('streamBuilder'),
-                              stream: appBloc.servicesStream,
+                              stream: appBloc.productsStream,
                               builder: (context, snapshot) {
                                 final data = snapshot.data;
                                 return Column(
