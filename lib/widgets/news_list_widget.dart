@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:kib/common_widgets/router.dart';
 import 'package:kib/models/news.dart';
+import 'package:kib/pages/news_single_page.dart';
 import 'package:kib/widgets/news_widget.dart';
 
 class NewsListWidget extends StatefulWidget {
@@ -12,12 +14,12 @@ class NewsListWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  MovieListWidgetState createState() {
-    return new MovieListWidgetState();
+  NewsListWidgetState createState() {
+    return new NewsListWidgetState();
   }
 }
 
-class MovieListWidgetState extends State<NewsListWidget> {
+class NewsListWidgetState extends State<NewsListWidget> {
   @override
   void initState() {
     super.initState();
@@ -36,8 +38,15 @@ class MovieListWidgetState extends State<NewsListWidget> {
             physics: const ClampingScrollPhysics(),
             itemCount: widget.news.length,
             itemBuilder: (BuildContext context, int index) {
-              return NewsWidget(
-                news: widget.news[index],
+              return InkWell(
+                onTap: () {
+                  Router.push(
+                      NewsSinglePage(news: widget.news[index]), context);
+                },
+                child: NewsWidget(
+                  news: widget.news[index],
+                  ratio: 0.8,
+                ),
               );
             }),
       ),

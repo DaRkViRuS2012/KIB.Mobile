@@ -1,32 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:kib/common_widgets/router.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:kib/common_widgets/common_widgets.dart';
 import 'package:kib/common_widgets/styles.dart';
 import 'package:kib/models/news.dart';
-// import 'package:flutter_html_view/flutter_html_view.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:kib/pages/news_single_page.dart';
+
+// import 'package:flutter_html/flutter_html.dart';
+import 'package:kib/widgets/news_widget.dart';
 
 import '../localization.dart';
 
-class NewsWidget extends StatelessWidget {
+class NewsSinglePage extends StatelessWidget {
   final News news;
-  final double ratio;
-  const NewsWidget({this.news, Key key, this.ratio}) : super(key: key);
+  const NewsSinglePage({this.news, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height * ratio;
-    return Material(
-      child: InkWell(
-        onTap: () {
-          if (ratio != 1) {
-            Router.present(NewsSinglePage(news: news), context);
-          }
-        },
+    return Scaffold(
+      appBar: getAppBar(
+          title: news.title(AppLocalizations.of(context).locale),
+          context: context),
+      body: Material(
         child: Container(
-          margin: EdgeInsets.all(8.0),
+          // margin: EdgeInsets.all(8.0),
           // width: 200,
-          height: height,
+          // height: height,
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(5.0),
@@ -75,11 +72,9 @@ class NewsWidget extends StatelessWidget {
                                     fontSize: 24.0,
                                     fontWeight: FontWeight.bold),
                               ),
-                              subtitle: SingleChildScrollView(
-                                child: Html(
-                                  data: news.body(
-                                      AppLocalizations.of(context).locale),
-                                ),
+                              subtitle: Html(
+                                data: news
+                                    .body(AppLocalizations.of(context).locale),
                               )
                               //  Text(
                               //   news.enBody,
