@@ -8,6 +8,7 @@ import 'package:kib/common_widgets/localized_text.dart';
 import 'package:kib/common_widgets/main_button.dart';
 import 'package:kib/common_widgets/router.dart';
 import 'package:kib/models/user_responce.dart';
+import 'package:kib/pages/auth/code_page.dart';
 import 'package:kib/pages/auth/signup_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -278,8 +279,8 @@ class LoginScreenState extends State<LoginScreen> with UserFeedback {
     return FlatButton(
         onPressed: () {
           print("pressed");
-          // Router.navigateTo(CodePage(), context);
-          launch("http://khouryinsurance.com/user/active");
+          Router.navigateTo(CodePage(), context);
+          // launch("http://khouryinsurance.com/user/active");
         },
         child: LocalizedText("code_activate"));
   }

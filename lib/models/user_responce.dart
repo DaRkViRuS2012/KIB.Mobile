@@ -14,7 +14,7 @@ String serviceResponceToJson(UserResponse data) => json.encode(data.toJson());
 class UserResponse {
   bool status;
   User user;
-  String message;
+  List<String> message;
   String type;
 
   UserResponse({
@@ -27,7 +27,8 @@ class UserResponse {
   factory UserResponse.fromJson(Map<String, dynamic> json) => new UserResponse(
         status: json["status"] == null ? null : json["status"],
         user: json["data"] == null ? null : User.fromJson(json["data"]),
-        message: json["message"] == null ? null : json["message"],
+        message:
+            json["message"] == null ? null : json["message"].cast<String>(),
         type: json["type"] == null ? null : json["type"],
       );
 

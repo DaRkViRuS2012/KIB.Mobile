@@ -69,7 +69,7 @@ class CodePageState extends State<CodePage> with UserFeedback {
             width: MediaQuery.of(context).size.width,
             child: StreamBuilder<UserResponse>(
               // feedback the user about the server response.
-              stream: bloc.submitLoginStream,
+              stream: bloc.submitActivateStream,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   appBloc.saveUser(snapshot.data.user);
@@ -119,7 +119,7 @@ class CodePageState extends State<CodePage> with UserFeedback {
                             ),
                             child: Container(
                               width: 300.0,
-                              height: 90.0,
+                              height: 180.0,
                               child: Column(
                                 children: <Widget>[
                                   phoneTextField(),
@@ -128,6 +128,7 @@ class CodePageState extends State<CodePage> with UserFeedback {
                                     height: 1.0,
                                     color: Colors.grey[400],
                                   ),
+                                  passwordTextField()
                                 ],
                               ),
                             ),
@@ -151,7 +152,7 @@ class CodePageState extends State<CodePage> with UserFeedback {
 
   Widget phoneTextField() {
     return StreamBuilder<String>(
-      stream: bloc.emailLoginStream,
+      stream: bloc.emailCodeStream,
       builder: (context, snapshot) {
         return Padding(
           padding:
@@ -162,7 +163,7 @@ class CodePageState extends State<CodePage> with UserFeedback {
               focusNode: myFocusNodeEmailLogin,
               controller: loginEmailController,
               keyboardType: TextInputType.emailAddress,
-              onChanged: bloc.changeLoginEmail,
+              onChanged: bloc.changeCodeEmail,
               style: TextStyle(
                   fontFamily: "WorkSansSemiBold",
                   fontSize: 16.0,
@@ -171,7 +172,7 @@ class CodePageState extends State<CodePage> with UserFeedback {
                 border: InputBorder.none,
                 errorText: AppLocalizations.of(context).trans(snapshot.error),
                 errorStyle: TextStyle(height: 0.1, fontSize: 12),
-                hintText: AppLocalizations.of(context).trans('code'),
+                hintText: AppLocalizations.of(context).trans('email'),
                 hintStyle:
                     TextStyle(fontFamily: "WorkSansSemiBold", fontSize: 17.0),
               ),
@@ -184,7 +185,7 @@ class CodePageState extends State<CodePage> with UserFeedback {
 
   Widget passwordTextField() {
     return StreamBuilder<String>(
-      stream: bloc.passwordLoginStream,
+      stream: bloc.codeStream,
       builder: (context, passwordSnapshot) {
         return StreamBuilder<bool>(
           initialData: true,
@@ -197,32 +198,18 @@ class CodePageState extends State<CodePage> with UserFeedback {
                 child: TextField(
                   focusNode: myFocusNodePasswordLogin,
                   controller: loginPasswordController,
-                  obscureText: snapshot.data,
-                  onChanged: bloc.changeLoginPassword,
+                  onChanged: bloc.changeCode,
                   style: TextStyle(
                       fontFamily: "WorkSansSemiBold",
                       fontSize: 16.0,
                       color: Colors.black),
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    icon: Icon(
-                      FontAwesomeIcons.lock,
-                      size: 22.0,
-                      color: Colors.black,
-                    ),
                     errorText: AppLocalizations.of(context)
                         .trans(passwordSnapshot.error),
-                    hintText: AppLocalizations.of(context).trans('password'),
+                    hintText: AppLocalizations.of(context).trans('code'),
                     hintStyle: TextStyle(
                         fontFamily: "WorkSansSemiBold", fontSize: 17.0),
-                    suffixIcon: GestureDetector(
-                      onTap: () => bloc.pushObscureLoginPassword,
-                      child: Icon(
-                        FontAwesomeIcons.eye,
-                        size: 15.0,
-                        color: Colors.black,
-                      ),
-                    ),
                   ),
                 ),
               ),
@@ -235,7 +222,7 @@ class CodePageState extends State<CodePage> with UserFeedback {
 
   Widget loginBtn() {
     return StreamBuilder<bool>(
-      stream: bloc.submitValidLogin,
+      stream: bloc.submitValidActivate,
       initialData: false,
       builder: (context, snapshot) {
         return StreamBuilder<bool>(
@@ -246,11 +233,11 @@ class CodePageState extends State<CodePage> with UserFeedback {
                 text: AppLocalizations.of(context).trans('activate'),
                 onPressed: () {
                   if ((!snapshot.hasData || !snapshot.data)) {
-                    showInSnackBar('error_provide_valid_info_code', context,
+                    showInSnackBar('Please enter email and code', context,
                         color: Colors.redAccent);
                     bloc.shouldShowFeedBack = false;
                   } else
-                    bloc.submitLogin();
+                    bloc.submitActivate();
                 },
                 width: 150,
                 height: 50,

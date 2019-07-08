@@ -19,6 +19,9 @@ class AuthBloc extends BaseBloc with Validators, Network {
   final _emailLoginController = BehaviorSubject<String>();
   final _passwordLoginController = BehaviorSubject<String>();
 
+  final _emailCodeController = BehaviorSubject<String>();
+  final _codeController = BehaviorSubject<String>();
+
   final _mobileSignUpController = BehaviorSubject<String>();
   final _passwordSignUpController = BehaviorSubject<String>();
   final _firstNameSignUpController = BehaviorSubject<String>();
@@ -38,6 +41,7 @@ class AuthBloc extends BaseBloc with Validators, Network {
   final _obscureSignUpPasswordConfirmation = BehaviorSubject<bool>();
 
   final _submitLoginController = PublishSubject<UserResponse>();
+  final _submitActivateController = PublishSubject<UserResponse>();
   final _submitSignUpController = PublishSubject<UserResponse>();
   final _submitUpdateUserController = PublishSubject<User>();
 
@@ -50,6 +54,10 @@ class AuthBloc extends BaseBloc with Validators, Network {
   Function(String) get changeLoginEmail => _emailLoginController.sink.add;
 
   Function(String) get changeLoginPassword => _passwordLoginController.sink.add;
+
+  Function(String) get changeCodeEmail => _emailCodeController.sink.add;
+
+  Function(String) get changeCode => _codeController.sink.add;
 // signup
   Function(String) get changeSignUpMobile => _mobileSignUpController.sink.add;
   Function(String) get changeSignUpPassword =>
@@ -122,8 +130,17 @@ class AuthBloc extends BaseBloc with Validators, Network {
   Stream<String> get passwordLoginStream =>
       _passwordLoginController.stream.transform(validatePassword);
 
+  Stream<String> get emailCodeStream =>
+      _emailCodeController.stream.transform(validatePhone);
+
+  Stream<String> get codeStream =>
+      _codeController.stream.transform(validateName);
+
   Stream<bool> get submitValidLogin => Observable.combineLatest2(
       emailLoginStream, passwordLoginStream, (a, b) => true);
+
+  Stream<bool> get submitValidActivate => Observable.combineLatest2(
+      emailCodeStream, codeStream, (a, b) => true);
 
   Stream<bool> get submitValidSignUp => Observable.combineLatest8(
       mobileSignUpStream,
@@ -139,6 +156,8 @@ class AuthBloc extends BaseBloc with Validators, Network {
 // _submitUpdateUserController
   Stream<UserResponse> get submitLoginStream => _submitLoginController.stream;
 
+  Stream<UserResponse> get submitActivateStream =>
+      _submitActivateController.stream;
   Stream<UserResponse> get submitSignUpStream => _submitSignUpController.stream;
 
   Stream<User> get submitUpdteUserStream => _submitUpdateUserController.stream;
@@ -174,6 +193,29 @@ class AuthBloc extends BaseBloc with Validators, Network {
     });
   }
 
+  submitActivate() {
+    final validEmail = _emailCodeController.value;
+    final validCode = _codeController.value;
+
+    pushLockTouchEvent;
+    startLoading;
+
+    activate(validEmail, validCode).then((response) {
+      print(response);
+      _submitActivateController.sink.add(response);
+      stopLoading;
+    }).catchError((e) {
+      shouldShowFeedBack = true;
+      print(e);
+      pushUnlockTouchEvent;
+      _submitActivateController.sink.addError(e);
+      stopLoading;
+      Future.delayed(Duration(milliseconds: 100)).then((_) {
+        startLoading;
+      });
+    });
+  }
+
   submitSignUp() {
     final validFirstName = _firstNameSignUpController.value;
     final validFatherName = _fatherNameSignUpController.value;
@@ -196,13 +238,14 @@ class AuthBloc extends BaseBloc with Validators, Network {
       validBirthDate,
       validCityId,
     ).then((user) {
-      login(validEmail, validPassword).then((response) {
-        _submitSignUpController.sink.add(response);
-        stopLoading;
-        pushUnlockTouchEvent;
-      }).catchError((e) {
-        print(e);
-      });
+      // login(validEmail, validPassword).then((response) {
+      print("responnnse");
+      _submitSignUpController.sink.add(user);
+      stopLoading;
+      pushUnlockTouchEvent;
+      // }).catchError((e) {
+      //   print(e);
+      // });
     }).catchError((e) {
       this.shouldShowFeedBack = true;
       stopLoading;
@@ -215,8 +258,7 @@ class AuthBloc extends BaseBloc with Validators, Network {
         _submitSignUpController.sink
             .addError("PHONENUMBER_OR_USERNAME_IS_USED");
       } else {
-        _submitSignUpController.sink.addError(
-            "Please check your data Mobile should only be 9 digits with out 0");
+        _submitSignUpController.sink.addError(e);
       }
       print(e);
     });
@@ -234,6 +276,7 @@ class AuthBloc extends BaseBloc with Validators, Network {
     _citySignUpController.close();
     _emailLoginController.close();
     _passwordLoginController.close();
+    _submitActivateController.close();
     _submitLoginController.close();
     _submitSignUpController.close();
     _submitUpdateUserController.close();

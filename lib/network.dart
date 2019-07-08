@@ -20,6 +20,7 @@ class Network {
   static final String _apiURL = baseUrl + '/api/';
   static final String mediaURL = baseUrl + '/storage/app/public';
   final String loginURL = _apiURL + 'login';
+  final String activateURL = _apiURL + 'user/active';
   final String registerURL = _apiURL + 'register';
   final String serviceURL = _apiURL + 'services';
   final String productURL = _apiURL + 'products';
@@ -86,6 +87,28 @@ class Network {
     }
   }
 
+  Future<UserResponse> activate(String email, String code) async {
+    final body = json.encode({
+      'email': email,
+      'code': code,
+    });
+    final response = await http.post(activateURL, body: body, headers: headers);
+    if (response.statusCode == 200) {
+      var res = json.decode(response.body);
+      print(res);
+      if (res["status"] == false) {
+        throw 'Activation Error';
+      } else {
+        return UserResponse.fromJson(json.decode(response.body));
+      }
+    } else if (response.statusCode == ErrorCodes.LOGIN_FAILED) {
+      throw 'error_wrong_credentials';
+    } else {
+      print(response.body);
+      throw json.decode(response.body);
+    }
+  }
+
   Future<UserResponse> signUp(
     String firstName,
     String fatherName,
@@ -111,8 +134,17 @@ class Network {
     });
     final response = await http.post(registerURL, body: body, headers: headers);
     if (response.statusCode == 200) {
-      print(json.decode(response.body));
-      return UserResponse.fromJson(json.decode(response.body));
+      var obj = json.decode(response.body);
+      print(obj);
+      if (obj['status'] == true) {
+        return UserResponse.fromJson(json.decode(response.body));
+      } else {
+        String error = "";
+        List<String>.from(obj['message']).forEach((f) {
+          error += f + "\n";
+        });
+        throw error;
+      }
     } else if (response.statusCode ==
         ErrorCodes.PHONENUMBER_OR_USERNAME_IS_USED) {
       print(json.decode(response.body));

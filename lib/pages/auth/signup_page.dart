@@ -6,10 +6,12 @@ import 'package:kib/bloc/bloc_provider.dart';
 import 'package:kib/common_widgets/feedback.dart';
 import 'package:kib/common_widgets/localized_text.dart';
 import 'package:kib/common_widgets/main_button.dart';
+import 'package:kib/common_widgets/router.dart';
 import 'package:kib/models/city.dart';
 import 'package:kib/models/city_response.dart';
 import 'package:kib/models/user_responce.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:kib/pages/auth/code_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../localization.dart';
@@ -100,15 +102,15 @@ class SignUpPageState extends State<SignUpPage> with UserFeedback {
                       bloc.shouldShowFeedBack = false;
                     }
                     if (snapshot.hasData) {
-                      appBloc.saveUser(snapshot.data.user);
-                      appBloc.saveToken("${snapshot.data.user.token}");
+                      //   appBloc.saveUser(snapshot.data.user);
+                      // appBloc.saveToken("${snapshot.data.user.token}");
                       WidgetsBinding.instance.addPostFrameCallback((_) {
                         // Navigator.of(context).pushReplacement(new MaterialPageRoute(
                         //     builder: (context) => HomePage(
                         //           afterLogin: true,
                         //         )));
-                        // Router.push(CodePage(), context);
-                        launch("http://khouryinsurance.com/user/active");
+                        Router.push(CodePage(), context);
+                        //launch("http://khouryinsurance.com/user/active");
                       });
                     }
                     return Column(
