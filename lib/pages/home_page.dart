@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:kib/common_widgets/localized_text.dart';
 import 'package:kib/common_widgets/radial_menu.dart';
 import 'package:kib/common_widgets/router.dart';
@@ -22,15 +22,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
-  // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  //     new FlutterLocalNotificationsPlugin();
+  FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      new FlutterLocalNotificationsPlugin();
 
   var map = {};
   var title = "";
   var body = {};
   var myToken = "";
-/*
+
   initFireBase() {
     var android = new AndroidInitializationSettings('mipmap/ic_launcher');
     var ios = new IOSInitializationSettings();
@@ -89,8 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     _firebaseMessaging.subscribeToTopic('allUsers');
   }
-*/
-/*
+
   showNotification(Map<String, dynamic> msg) async {
     var android = new AndroidNotificationDetails(
         "1", "Channel Name", "Channel description");
@@ -103,11 +102,11 @@ class _MyHomePageState extends State<MyHomePage> {
         (msg['notification']['body']),
         platform);
   }
-*/
+
   @override
   Widget build(BuildContext context) {
     // Router.present(WelcomeSceen(), context);
-
+    initFireBase();
     return Scaffold(
         appBar: AppBar(
           leading: Container(),

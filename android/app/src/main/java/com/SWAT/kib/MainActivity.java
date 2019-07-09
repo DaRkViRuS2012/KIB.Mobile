@@ -1,4 +1,4 @@
-package com.example.kib;
+package com.SWAT.kib;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
