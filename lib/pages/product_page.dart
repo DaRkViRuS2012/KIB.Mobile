@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kib/bloc/appBloc.dart';
 import 'package:kib/bloc/bloc_provider.dart';
 import 'package:kib/common_widgets/common_widgets.dart';
+import 'package:kib/common_widgets/localized_text.dart';
 import 'package:kib/common_widgets/router.dart';
 import 'package:kib/common_widgets/styles.dart';
 import 'package:kib/models/service.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:kib/network.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../localization.dart';
 import 'auth/login_page.dart';
 
 class ProdcutPage extends StatelessWidget {
@@ -61,14 +63,15 @@ class ProdcutPage extends StatelessWidget {
                         child: Hero(
                           tag: "${prodcut.id}",
                           child: Text(
-                            prodcut.enTitle,
+                            prodcut.title(AppLocalizations.of(context).locale),
                             style: TextStyle(
                                 fontSize: 24.0, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
                       subtitle: Text(
-                        prodcut.enDescription,
+                        prodcut
+                            .descritpion(AppLocalizations.of(context).locale),
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
@@ -104,8 +107,8 @@ class ProdcutPage extends StatelessWidget {
                         Router.present(LoginScreen(), context);
                       }
                     },
-                    child: Text(
-                      "Buy Now",
+                    child: LocalizedText(
+                      "buy_now",
                       style: TextStyle(fontSize: 16),
                     ),
                   ),

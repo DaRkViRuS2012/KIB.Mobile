@@ -111,15 +111,34 @@ class AuthBloc extends BaseBloc with Validators, Network {
 
   Stream<bool> get obscureSignUpPasswordStream => _obscureSignUpPassword.stream;
 
-  get pushObscureSignUpPasswordConfirmation =>
-      _obscureSignUpPasswordConfirmation.sink
-          .add(!_obscureSignUpPasswordConfirmation.value);
+  setObscureSignUpPassword(bool value) {
+    // print(_obscureSignUpPassword.value);
+    _obscureSignUpPassword.sink.add(value);
+  }
+
+  get pushObscureSignUpPasswordConfirmation {
+    print(_obscureSignUpPasswordConfirmation.value);
+    _obscureSignUpPasswordConfirmation.sink
+        .add(!_obscureSignUpPasswordConfirmation.value);
+  }
+
+  get setObscureSignUpPasswordConfirmation {
+    print(_obscureSignUpPasswordConfirmation.value);
+    _obscureSignUpPasswordConfirmation.sink.add(true);
+  }
 
   Stream<bool> get obscureSignUpPasswordConfirmationStream =>
       _obscureSignUpPasswordConfirmation.stream;
 
-  get pushObscureLoginPassword => _obscureLoginPasswordController.sink
-      .add(!_obscureLoginPasswordController.value);
+  get pushObscureLoginPassword {
+    print(_obscureLoginPasswordController.value);
+    _obscureLoginPasswordController.sink
+        .add(!_obscureLoginPasswordController.value);
+  }
+
+  get setObscureLoginPassword {
+    _obscureLoginPasswordController.sink.add(true);
+  }
 
   Stream<bool> get obscureLoginPasswordStream =>
       _obscureLoginPasswordController.stream;
@@ -139,8 +158,8 @@ class AuthBloc extends BaseBloc with Validators, Network {
   Stream<bool> get submitValidLogin => Observable.combineLatest2(
       emailLoginStream, passwordLoginStream, (a, b) => true);
 
-  Stream<bool> get submitValidActivate => Observable.combineLatest2(
-      emailCodeStream, codeStream, (a, b) => true);
+  Stream<bool> get submitValidActivate =>
+      Observable.combineLatest2(emailCodeStream, codeStream, (a, b) => true);
 
   Stream<bool> get submitValidSignUp => Observable.combineLatest8(
       mobileSignUpStream,

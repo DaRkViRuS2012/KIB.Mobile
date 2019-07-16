@@ -54,6 +54,13 @@ class Service {
     return arTitle;
   }
 
+  String descritpion(Locale locale) {
+    if (locale.languageCode == 'en') {
+      return enDescription;
+    }
+    return arDescription;
+  }
+
   String quotationURL(String baseURL) {
     if (this.quotation != null) {
       return quotation.url;

@@ -29,7 +29,7 @@ class _ServicesSonsPageState extends State<ServicesSonsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar(title: "services_title", context: context),
+      appBar: getAppBar(title: "services_page_title", context: context),
       body: Material(
         child: Container(
           child: StreamBuilder<bool>(

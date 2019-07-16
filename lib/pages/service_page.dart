@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kib/bloc/appBloc.dart';
 import 'package:kib/bloc/bloc_provider.dart';
 import 'package:kib/common_widgets/common_widgets.dart';
+import 'package:kib/common_widgets/localized_text.dart';
 import 'package:kib/common_widgets/router.dart';
 import 'package:kib/common_widgets/styles.dart';
 import 'package:kib/models/service.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../localization.dart';
 import '../network.dart';
 import 'auth/login_page.dart';
 
@@ -61,14 +63,16 @@ class ServicePage extends StatelessWidget {
                           child: Hero(
                             tag: "${service.id}",
                             child: Text(
-                              service.enTitle,
+                              service
+                                  .title(AppLocalizations.of(context).locale),
                               style: TextStyle(
                                   fontSize: 24.0, fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
                         subtitle: Text(
-                          service.enDescription,
+                          service
+                              .descritpion(AppLocalizations.of(context).locale),
                           style: TextStyle(fontSize: 16),
                         ),
                       ),
@@ -99,8 +103,8 @@ class ServicePage extends StatelessWidget {
                           Router.present(LoginScreen(), context);
                         }
                       },
-                      child: Text(
-                        "Get Qoutation",
+                      child: LocalizedText(
+                        "get_qutation",
                         style: TextStyle(fontSize: 16),
                       ),
                     ),

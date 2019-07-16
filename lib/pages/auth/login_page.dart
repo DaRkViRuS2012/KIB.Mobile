@@ -220,7 +220,9 @@ class LoginScreenState extends State<LoginScreen> with UserFeedback {
                     hintStyle: TextStyle(
                         fontFamily: "WorkSansSemiBold", fontSize: 17.0),
                     suffixIcon: GestureDetector(
-                      onTap: () => bloc.pushObscureLoginPassword,
+                      onTap: () {
+                        bloc.setObscureSignUpPassword(!snapshot.data);
+                      },
                       child: Icon(
                         FontAwesomeIcons.eye,
                         size: 15.0,

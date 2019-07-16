@@ -74,6 +74,7 @@ class Network {
     final response = await http.post(loginURL, body: body, headers: headers);
     if (response.statusCode == 200) {
       var res = json.decode(response.body);
+      print(res);
       if (res["status"] == false) {
         throw 'error_wrong_credentials';
       } else {
