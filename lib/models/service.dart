@@ -26,24 +26,24 @@ class Service {
   Media quotation;
 
   String image(String baseURL) {
-    if (type == "service") {
-      if (this.media != null) {
-        for (Media m in media) {
-          if (m.mediaType == "image") {
-            return m.url;
-          }
+    // if (type == "service") {
+    if (this.media != null) {
+      for (Media m in media) {
+        if (m.mediaType == "image") {
+          return m.url;
         }
       }
     }
-    if (type == "product") {
-      if (this.productMedia != null) {
-        for (Media m in productMedia) {
-          if (m.mediaType == "image") {
-            return m.url;
-          }
-        }
-      }
-    }
+    // }
+    // if (type == "product") {
+    //   if (this.productMedia != null) {
+    //     for (Media m in productMedia) {
+    //       if (m.mediaType == "image") {
+    //         return m.url;
+    //       }
+    //     }
+    //   }
+    // }
     return "";
   }
 

@@ -55,6 +55,7 @@ class Network {
 
   Future<ServiceResponce> getInsuranceProducts(String id) async {
     var _subURL = _apiURL + "product/sub/$id";
+    print(_subURL);
     final response = await http.get(_subURL);
     if (response.statusCode == 200) {
       return ServiceResponce.fromJson(json.decode(response.body));
