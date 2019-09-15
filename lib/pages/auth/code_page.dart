@@ -73,7 +73,7 @@ class CodePageState extends State<CodePage> with UserFeedback {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   appBloc.saveUser(snapshot.data.user);
-                  appBloc.saveToken("${snapshot.data.user.id}");
+                  appBloc.saveToken("${snapshot.data.user.token}");
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     Navigator.of(context).pop();
                   });
