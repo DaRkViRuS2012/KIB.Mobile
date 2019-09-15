@@ -62,6 +62,7 @@ class _MyAppState extends State<MyApp> {
           return supportedLocales.first;
         },
         title: 'KIB',
+        
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
