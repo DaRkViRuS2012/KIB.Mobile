@@ -17,7 +17,6 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-  auto_size_text: ^2.0.1
   vector_math: ^2.0.8
   font_awesome_flutter: 8.4.0
   photo_view: ^0.3.3
@@ -29,7 +28,7 @@ dependencies:
   device_info: ^0.4.0+2
   date_format:
   url_launcher:
-  flutter_advanced_networkimage: ^0.4.15
+  flutter_advanced_networkimage: ^0.5.0
   json_annotation: ^2.4.0
   flutter_datetime_picker: ^1.2.1
   webview_flutter: ^0.3.9
@@ -46,6 +45,7 @@ dependencies:
   # firebase_messaging: ^5.0.2
   cupertino_icons: ^0.1.2
   flutter_html: ^0.10.4
+  auto_size_text: ^2.1.0
 
 dev_dependencies:
   flutter_test:

@@ -11,7 +11,7 @@ import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:kib/network.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:flutter_html/flutter_html.dart';
 import '../localization.dart';
 import 'auth/login_page.dart';
 
@@ -55,25 +55,38 @@ class ProdcutPage extends StatelessWidget {
               Expanded(
                 flex: 4,
                 child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      title: Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
-                        child: Hero(
-                          tag: "${prodcut.id}",
-                          child: Text(
-                            prodcut.title(AppLocalizations.of(context).locale),
-                            style: TextStyle(
-                                fontSize: 24.0, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      subtitle: Text(
-                        prodcut
-                            .descritpion(AppLocalizations.of(context).locale),
-                        style: TextStyle(fontSize: 16),
-                      ),
+                  color: Colors.white,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        ListTile(
+                            title: Padding(
+                              padding:
+                                  const EdgeInsets.only(bottom: 8.0, top: 8.0),
+                              child: Hero(
+                                tag: "${prodcut.id}",
+                                child: Text(
+                                  prodcut.title(
+                                      AppLocalizations.of(context).locale),
+                                  style: TextStyle(
+                                      fontSize: 24.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            subtitle: SingleChildScrollView(
+                              child: Html(
+                                data: prodcut.descritpion(
+                                    AppLocalizations.of(context).locale),
+                              ),
+                            )
+                            //  Text(
+                            //   news.enBody,
+                            //   style: TextStyle(fontSize: 16.0),
+                            // ),
+                            )
+                      ],
                     ),
                   ),
                 ),
