@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:kib/bloc/bloc_provider.dart';
 import 'package:kib/dataStore/dataStore.dart';
 import 'package:kib/models/about_response.dart';
@@ -14,8 +16,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppBloc extends BaseBloc with Network {
-  final SharedPreferences _prefs;
-  DataStore _dataStore;
+  // final DataStore _dataStore;
 
   bool gettingServices = false;
   bool gettingSubServices = false;
@@ -23,9 +24,7 @@ class AppBloc extends BaseBloc with Network {
   bool gettingSubProducts = false;
   bool gettingGalleries = false;
   bool gettingNews = false;
-  AppBloc(this._prefs) {
-    _dataStore = DataStore();
-  }
+  // AppBloc(this._dataStore);
   final _loadingController = BehaviorSubject<bool>();
   get startLoading => _loadingController.sink.add(true);
   get stopLoading => _loadingController.sink.add(false);
@@ -44,6 +43,7 @@ class AppBloc extends BaseBloc with Network {
   GalleryPopulated galleriesPopulated = GalleryPopulated([]);
   NewsPopulated newsPopulated = NewsPopulated([]);
 
+  final _localeController = BehaviorSubject<Locale>();
   final _servicesController = BehaviorSubject<ServicesState>();
   final _productsController = BehaviorSubject<ServicesState>();
   final _insurancesController = BehaviorSubject<ServicesState>();
@@ -56,6 +56,7 @@ class AppBloc extends BaseBloc with Network {
   final _citiesController = BehaviorSubject<CityResponce>();
   final _aboutController = BehaviorSubject<AboutResponce>();
 
+  Stream<Locale> get selectedLocaleStream => _localeController.stream;
   Stream<Service> get selectedServiceStream =>
       _selectedServiceController.stream;
   Stream<Service> get selectedProductStream =>
@@ -79,6 +80,18 @@ class AppBloc extends BaseBloc with Network {
 
   changeInsurance(product) {
     _selectedInsuranceController.sink.add(product);
+  }
+
+  changeLocale(locale) {
+    _localeController.sink.add(locale);
+    DataStore().setLocale(locale);
+  }
+
+  fetchLocale() {
+    var locale = DataStore().getLocale();
+    if (locale != null) {
+      changeLocale(locale);
+    }
   }
 
   Future mainServices() {
@@ -297,6 +310,7 @@ class AppBloc extends BaseBloc with Network {
 
   @override
   void dispose() {
+    _localeController.close();
     _servicesController.close();
     _subServicesController.close();
     _maineServicesController.close();

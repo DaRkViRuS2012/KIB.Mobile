@@ -11,32 +11,74 @@ import 'dataStore/dataStore.dart';
 
 void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  DataStore.initPrefs();
-  runApp(MyApp(prefs: prefs));
+  await DataStore.initPrefs();
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  final SharedPreferences prefs;
+  // final DataStore data;
 
-  const MyApp({Key key, this.prefs})
-      : assert(prefs != null),
-        super(key: key);
+  const MyApp({
+    Key key,
+  }) : super(key: key);
   // This widget is the root of your application.
   @override
   _MyAppState createState() => _MyAppState();
+
+  static void setLocale(BuildContext context, Locale newLocale) {
+    _MyAppState state = context.ancestorStateOfType(TypeMatcher<_MyAppState>());
+
+    state.setState(() {
+      state.selectedLocale = newLocale;
+    });
+  }
 }
 
 class _MyAppState extends State<MyApp> {
   AppBloc bloc;
   Key key;
+  Locale selectedLocale;
+  @override
+  void initState() {
+    super.initState();
+    bloc = AppBloc();
+    bloc.fetchLocale();
+  }
+
+  static void setLocale(BuildContext context, Locale newLocale) {
+    _MyAppState state = context.ancestorStateOfType(TypeMatcher<_MyAppState>());
+
+    state.setState(() {
+      state.selectedLocale = newLocale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    bloc = AppBloc(widget.prefs);
+    return StreamBuilder<Locale>(
+        stream: bloc.selectedLocaleStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return mainWidget(Locale('en', 'US'));
+          } else if (snapshot.hasData) {
+            return mainWidget(snapshot.data);
+          }
+          return Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        });
+  }
+
+  mainWidget(locale) {
     return BlocProvider(
       bloc: bloc,
       child: MaterialApp(
         key: key,
+        locale: selectedLocale,
         debugShowCheckedModeBanner: false,
         supportedLocales: [
           const Locale('en', 'US'),
@@ -58,11 +100,9 @@ class _MyAppState extends State<MyApp> {
               return supportedLocale;
             }
           }
-
           return supportedLocales.first;
         },
         title: 'KIB',
-        
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),

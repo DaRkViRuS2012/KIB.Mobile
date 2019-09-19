@@ -11,6 +11,7 @@ import 'package:kib/common_widgets/router.dart';
 import 'package:kib/common_widgets/styles.dart';
 import 'package:kib/dataStore/dataStore.dart';
 import 'package:kib/localization.dart';
+import 'package:kib/main.dart';
 import 'auth/profile_page.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -113,6 +114,20 @@ class _MyHomePageState extends State<MyHomePage> {
           elevation: 0.0,
           backgroundColor: Colors.transparent,
           actions: <Widget>[
+            IconButton(
+              color: Colors.black,
+              icon: Icon(Icons.language),
+              onPressed: () {
+                if (DataStore().getLocale().languageCode == 'en') {
+                  print('ar');
+                  DataStore().setLocale(Locale('ar', ''));
+                } else {
+                  print('en');
+                  DataStore().setLocale(Locale('en', ''));
+                }
+                MyApp.setLocale(context, DataStore().getLocale());
+              },
+            ),
             if (DataStore().isUserLoggedIn)
               IconButton(
                 icon: Icon(FontAwesomeIcons.userCircle,
@@ -120,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   Router.present(ProfilePage(), context);
                 },
-              )
+              ),
           ],
         ),
         body: Center(
