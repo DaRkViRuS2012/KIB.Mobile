@@ -35,7 +35,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  AppBloc bloc;
+  static AppBloc bloc;
   Key key;
   Locale selectedLocale;
   @override
@@ -43,11 +43,16 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     bloc = AppBloc();
     bloc.fetchLocale();
+    var locale = DataStore().getLocale();
+    if (locale != null) {
+      selectedLocale = locale;
+    }
   }
 
   static void setLocale(BuildContext context, Locale newLocale) {
     _MyAppState state = context.ancestorStateOfType(TypeMatcher<_MyAppState>());
-
+    DataStore().setLocale(newLocale);
+    bloc.changeLocale(newLocale);
     state.setState(() {
       state.selectedLocale = newLocale;
     });
@@ -59,13 +64,12 @@ class _MyAppState extends State<MyApp> {
         stream: bloc.selectedLocaleStream,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return mainWidget(Locale('en', 'US'));
+            return mainWidget();
           } else if (snapshot.hasData) {
-            return mainWidget(snapshot.data);
+            // selectedLocale = snapshot.data;
+            return mainWidget();
           }
           return Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
             child: Center(
               child: CircularProgressIndicator(),
             ),
@@ -73,7 +77,7 @@ class _MyAppState extends State<MyApp> {
         });
   }
 
-  mainWidget(locale) {
+  mainWidget() {
     return BlocProvider(
       bloc: bloc,
       child: MaterialApp(
