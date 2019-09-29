@@ -109,103 +109,178 @@ class _MyHomePageState extends State<MyHomePage> {
     // Router.present(WelcomeSceen(), context);
     initFireBase();
     return Scaffold(
-        appBar: AppBar(
-          leading: Container(),
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          actions: <Widget>[
-            IconButton(
-              color: Colors.black,
-              icon: Icon(Icons.language),
-              onPressed: () {
-                if (DataStore().getLocale().languageCode == 'en') {
-                  print('ar');
-                  DataStore().setLocale(Locale('ar', ''));
-                } else {
-                  print('en');
-                  DataStore().setLocale(Locale('en', ''));
-                }
-                MyApp.setLocale(context, DataStore().getLocale());
-              },
-            ),
-            if (DataStore().isUserLoggedIn)
-              IconButton(
-                icon: Icon(FontAwesomeIcons.userCircle,
-                    color: Colors.grey.shade900),
-                onPressed: () {
-                  Router.present(ProfilePage(), context);
-                },
-              ),
-          ],
-        ),
+        // appBar: AppBar(
+        //   leading: Container(),
+        //   elevation: 0.0,
+        //   backgroundColor: Colors.transparent,
+        //   actions: <Widget>[
+        //     IconButton(
+        //       color: Colors.black,
+        //       icon: Container(
+        //         constraints: BoxConstraints.expand(height: 30),
+        //         child: Row(
+        //           mainAxisAlignment: MainAxisAlignment.center,
+        //           crossAxisAlignment: CrossAxisAlignment.center,
+        //           children: <Widget>[
+        //             Expanded(
+        //               child: Container(
+        //                 width: 100,
+        //                 child: Text(
+        //                   "العربية",
+        //                   style: TextStyle(color: Colors.red),
+        //                 ),
+        //               ),
+        //             ),
+        //             Icon(Icons.language),
+        //           ],
+        //         ),
+        //       ),
+        //       onPressed: () {
+        //         if (DataStore().getLocale().languageCode == 'en') {
+        //           print('ar');
+        //           DataStore().setLocale(Locale('ar', ''));
+        //         } else {
+        //           print('en');
+        //           DataStore().setLocale(Locale('en', ''));
+        //         }
+        //         MyApp.setLocale(context, DataStore().getLocale());
+        //       },
+        //     ),
+        //     if (DataStore().isUserLoggedIn)
+        //       IconButton(
+        //         icon: Icon(FontAwesomeIcons.userCircle,
+        //             color: Colors.grey.shade900),
+        //         onPressed: () {
+        //           Router.present(ProfilePage(), context);
+        //         },
+        //       ),
+        //   ],
+        // ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Expanded(
-                flex: 2,
-                child: Container(
-                  alignment: Alignment(1, 1),
-                  child: ListTile(
-                    title: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                            text: AppLocalizations.of(context)
-                                .trans("welcome_msg"),
-                            style: TextStyle(
-                              color: Style.primaryDarkColor,
-                              fontSize: 32.0,
-                              fontFamily: "Verdana",
-                              fontWeight: FontWeight.normal,
-                            ),
-                            children: [
-                              TextSpan(text: " "),
-                              TextSpan(text: "K"),
-                              TextSpan(
-                                text: "I",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              TextSpan(text: "B")
-                            ]),
-                      ),
-                    ),
-                    subtitle: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: LocalizedText(
-                        "welcome_msg_sub_title",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 4,
-                child: Container(
-                  child: RadialMenu(),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  alignment: Alignment(0, 0),
-                  child: LocalizedText(
-                    "rights_msg",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              )
-            ],
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            height: 40,
           ),
-        ) // This trailing comma makes auto-formatting nicer for build methods.
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                FlatButton(
+                  child: Container(
+                    width: 80,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            child:
+                                (DataStore().getLocale().languageCode == 'en')
+                                    ? Text(
+                                        "العربية",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14.0,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    : Text("English",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14.0,
+                                            fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+                        Icon(Icons.language),
+                      ],
+                    ),
+                  ),
+                  onPressed: () {
+                    if (DataStore().getLocale().languageCode == 'en') {
+                      print('ar');
+                      DataStore().setLocale(Locale('ar', ''));
+                    } else {
+                      print('en');
+                      DataStore().setLocale(Locale('en', ''));
+                    }
+                    MyApp.setLocale(context, DataStore().getLocale());
+                  },
+                ),
+                if (DataStore().isUserLoggedIn)
+                  IconButton(
+                    icon: Icon(FontAwesomeIcons.userCircle,
+                        color: Colors.grey.shade900),
+                    onPressed: () {
+                      Router.present(ProfilePage(), context);
+                    },
+                  ),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
+              alignment: Alignment(1, 1),
+              child: ListTile(
+                title: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                        text: AppLocalizations.of(context).trans("welcome_msg"),
+                        style: TextStyle(
+                          color: Style.primaryDarkColor,
+                          fontSize: 32.0,
+                          fontFamily: "Verdana",
+                          fontWeight: FontWeight.normal,
+                        ),
+                        children: [
+                          TextSpan(text: " "),
+                          TextSpan(text: "K"),
+                          TextSpan(
+                            text: "I",
+                            style: TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
+                          TextSpan(text: "B")
+                        ]),
+                  ),
+                ),
+                subtitle: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: LocalizedText(
+                    "welcome_msg_sub_title",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 4,
+            child: Container(
+              child: RadialMenu(),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              alignment: Alignment(0, 0),
+              child: LocalizedText(
+                "rights_msg",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+              ),
+            ),
+          )
+        ],
+      ),
+    ) // This trailing comma makes auto-formatting nicer for build methods.
         );
   }
 }

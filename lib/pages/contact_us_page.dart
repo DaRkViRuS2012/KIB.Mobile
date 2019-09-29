@@ -188,6 +188,6 @@ class _ContactusPageState extends State<ContactusPage> {
 
   sendMail(String subject) {
     launch(
-        'mailto:<khourybrokerage@gmail.com>?subject=' + '$subject' + '&body=');
+        'mailto:<info@khouryinsurance.com>?subject=' + '$subject' + '&body=');
   }
 }
