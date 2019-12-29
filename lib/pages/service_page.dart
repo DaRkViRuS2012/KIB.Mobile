@@ -61,31 +61,26 @@ class ServicePage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
                           ListTile(
-                              title: Padding(
-                                padding: const EdgeInsets.only(
-                                    bottom: 8.0, top: 8.0),
-                                child: Hero(
-                                  tag: "${service.id}",
-                                  child: Text(
-                                    service.title(
-                                        AppLocalizations.of(context).locale),
-                                    style: TextStyle(
-                                        fontSize: 24.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                            title: Padding(
+                              padding:
+                                  const EdgeInsets.only(bottom: 8.0, top: 8.0),
+                              child: Hero(
+                                tag: "${service.id}",
+                                child: Text(
+                                  service.title(
+                                      AppLocalizations.of(context).locale),
+                                  style: TextStyle(
+                                      fontSize: 24.0,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
-                              subtitle: SingleChildScrollView(
-                                child: Html(
+                            ),
+                            subtitle: SingleChildScrollView(
+                              child: HTMLWidget(
                                   data: service.descritpion(
-                                      AppLocalizations.of(context).locale),
-                                ),
-                              )
-                              //  Text(
-                              //   news.enBody,
-                              //   style: TextStyle(fontSize: 16.0),
-                              // ),
-                              )
+                                      AppLocalizations.of(context).locale)),
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -126,5 +121,28 @@ class ServicePage extends StatelessWidget {
             ),
           ),
         ));
+  }
+}
+
+class HTMLWidget extends StatelessWidget {
+  const HTMLWidget({
+    Key key,
+    @required this.data,
+  }) : super(key: key);
+  final String data;
+  @override
+  Widget build(BuildContext context) {
+    return Html(
+      data: data,
+      customTextAlign: (element) {
+        var style = element.attributes["style"];
+        if (style.contains("text-align")) {
+          if (style.contains("right")) {
+            return TextAlign.right;
+          }
+        }
+        return TextAlign.left;
+      },
+    );
   }
 }

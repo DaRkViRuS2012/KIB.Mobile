@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:kib/common_widgets/common_widgets.dart';
 import 'package:kib/common_widgets/styles.dart';
 import 'package:kib/models/news.dart';
-
-// import 'package:flutter_html/flutter_html.dart';
-import 'package:kib/widgets/news_widget.dart';
-
+import 'package:kib/pages/service_page.dart';
 import '../localization.dart';
 
 class NewsSinglePage extends StatelessWidget {
@@ -66,21 +62,16 @@ class NewsSinglePage extends StatelessWidget {
                             ),
                           ),
                           ListTile(
-                              title: Text(
-                                news.title(AppLocalizations.of(context).locale),
-                                style: TextStyle(
-                                    fontSize: 24.0,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              subtitle: Html(
-                                data: news
-                                    .body(AppLocalizations.of(context).locale),
-                              )
-                              //  Text(
-                              //   news.enBody,
-                              //   style: TextStyle(fontSize: 16.0),
-                              // ),
-                              )
+                            title: Text(
+                              news.title(AppLocalizations.of(context).locale),
+                              style: TextStyle(
+                                  fontSize: 24.0, fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: HTMLWidget(
+                              data: news
+                                  .body(AppLocalizations.of(context).locale),
+                            ),
+                          )
                         ],
                       ),
                     ),

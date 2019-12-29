@@ -4,6 +4,7 @@ import 'package:kib/bloc/appBloc.dart';
 import 'package:kib/bloc/bloc_provider.dart';
 import 'package:kib/common_widgets/common_widgets.dart';
 import 'package:kib/models/about_response.dart';
+import 'package:kib/pages/service_page.dart';
 
 import '../localization.dart';
 
@@ -35,7 +36,7 @@ class _AboutusPageState extends State<AboutusPage> {
                   child: SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Html(
+                      child: HTMLWidget(
                         data: snapshot.data.data
                             .body(AppLocalizations.of(context).locale),
                       ),

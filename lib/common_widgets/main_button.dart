@@ -79,7 +79,7 @@ class MainButtonState extends State<MainButton>
                   widget.text,
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 22.0,
+                      fontSize: 18.0,
                       fontWeight: FontWeight.w500,
                       height: 0.8),
                 ),

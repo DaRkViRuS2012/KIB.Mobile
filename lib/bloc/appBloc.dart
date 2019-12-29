@@ -13,7 +13,6 @@ import 'package:kib/states/news_state.dart';
 import 'package:kib/states/service_state.dart';
 
 import 'package:rxdart/rxdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AppBloc extends BaseBloc with Network {
   // final DataStore _dataStore;
@@ -105,19 +104,6 @@ class AppBloc extends BaseBloc with Network {
       _insurancesController.addStream(fetchMainProductsFromNetwork());
     }
   }
-
-  // Future mainProducts() {
-  //   startLoading;
-  //   return getInsurances().then((response) {
-  //     stopLoading;
-  //     print(response);
-  //     _insurancesController.sink.add(response);
-  //   }).catchError((e) {
-  //     print(e);
-  //     stopLoading;
-  //     _insurancesController.sink.addError(e);
-  //   });
-  // }
 
   Future citis() {
     startLoading;

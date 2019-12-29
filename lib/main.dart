@@ -10,6 +10,7 @@ import 'package:flutter\_localizations/flutter\_localizations.dart';
 import 'dataStore/dataStore.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await DataStore.initPrefs();
   runApp(MyApp());

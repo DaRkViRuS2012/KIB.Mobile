@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kib/common_widgets/router.dart';
 import 'package:kib/common_widgets/styles.dart';
 import 'package:kib/models/news.dart';
-// import 'package:flutter_html_view/flutter_html_view.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:kib/pages/news_single_page.dart';
+import 'package:kib/pages/service_page.dart';
 
 import '../localization.dart';
 
@@ -76,7 +75,7 @@ class NewsWidget extends StatelessWidget {
                                     fontWeight: FontWeight.bold),
                               ),
                               subtitle: SingleChildScrollView(
-                                child: Html(
+                                child: HTMLWidget(
                                   data: news.body(
                                       AppLocalizations.of(context).locale),
                                 ),

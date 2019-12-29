@@ -10,8 +10,8 @@ import 'package:kib/models/service.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:kib/network.dart';
+import 'package:kib/pages/service_page.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_html/flutter_html.dart';
 import '../localization.dart';
 import 'auth/login_page.dart';
 
@@ -76,7 +76,7 @@ class ProdcutPage extends StatelessWidget {
                               ),
                             ),
                             subtitle: SingleChildScrollView(
-                              child: Html(
+                              child: HTMLWidget(
                                 data: prodcut.descritpion(
                                     AppLocalizations.of(context).locale),
                               ),
