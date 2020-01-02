@@ -136,9 +136,11 @@ class HTMLWidget extends StatelessWidget {
       data: data,
       customTextAlign: (element) {
         var style = element.attributes["style"];
-        if (style.contains("text-align")) {
-          if (style.contains("right")) {
-            return TextAlign.right;
+        if (style != null) {
+          if (style.contains("text-align")) {
+            if (style.contains("right")) {
+              return TextAlign.right;
+            }
           }
         }
         return TextAlign.left;
